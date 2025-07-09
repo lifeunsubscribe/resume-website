@@ -1,11 +1,52 @@
-.DS_Store
-Thumbs.db
+# CDK-specific ignores
+cdk.out/
+.cdk.staging/
+cdk.context.json
+
+# Node.js dependencies
 node_modules/
+*.tgz
+
+# TypeScript/JavaScript
 dist/
+*.js
+*.d.ts
+!jest.config.js
+
+# Editor and IDE files
 .vscode/
-.env
-*.log
-*.tmp
-*.bak
+.idea/
 *.swp
-*.jpg
+*.swo
+
+# AWS CDK synthesized files
+*.template.json
+
+# Dependency directories
+jspm_packages/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local development files
+.env
+*.env
+
+# Compiled files in the website directory (if you have any)
+resume-website/**/*.js
+resume-website/**/*.css.map
+
+# Optional: Ignore the resume website assets if they're built elsewhere
+resume-website-files/images/ 

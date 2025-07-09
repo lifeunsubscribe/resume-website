@@ -34,18 +34,28 @@ header {
 .header-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .headshot-container {
     width: 150px;
     height: 150px;
-    margin: 0 auto 1rem;
+    flex-shrink: 0;
+    margin: 0 auto;
     position: relative;
     border-radius: 50%;
     border: 4px solid white;
     box-shadow: var(--shadow);
     transition: var(--transition);
+}
+
+.header-text {
+    padding-left: 1.5rem;
+    flex-grow: 1;
+    /* Allow text to take remaining space */
 }
 
 .headshot {
@@ -113,6 +123,16 @@ h4 {
     display: flex;
     justify-content: center;
     gap: 1rem;
+}
+
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        /* Stack vertically on mobile */
+        padding: 0 1rem;
+        text-align: center;
+    }
 }
 
 .social-links a {
