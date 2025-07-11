@@ -12,7 +12,8 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
 
     // S3 Bucket for hosting the website
     const websiteBucket = new s3.Bucket(this, 'ResumeWebsiteBucket', {
-      accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
+      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       enforceSSL: true,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
@@ -40,6 +41,7 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
 
     // Then create the distribution with OAC
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
+      defaultRootObject: 'index.html',
       defaultBehavior: {
         origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(websiteBucket),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
