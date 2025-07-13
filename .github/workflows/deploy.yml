@@ -1,0 +1,43 @@
+name: Deploy Resume Website  
+
+on:
+  push:
+    branches: [ main ]       # Trigger on pushes to main
+    paths:
+      - 'resume-website-files/**'  # 👈 Only trigger when files in /website change
+      - '!resume-website-files/README.md'  # Optional: exclude specific files
+  pull_request:
+    branches: [ main ]       # Optional: Run on PRs for validation
+
+permissions:
+  id-token: write            # Required for OIDC
+  contents: read             # Required to fetch code
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sync files to S3
+        run: |
+          aws s3 sync ./resume-website-files s3://www.cloudwithsarah.com \
+            --delete \  # Remove files in S3 not present locally
+            --exclude ".git/*" \
+            --exclude ".DS_Store"
+            
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
+            --paths "/*"
+
+      - name: Deploy with CDK
+        run: npx cdk deploy --require-approval never
