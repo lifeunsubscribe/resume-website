@@ -30,8 +30,11 @@ jobs:
         run: |
           aws s3 sync ./resume-website-files s3://www.cloudwithsarah.com \
             --delete \
-            --exclude ".git/*" \
-            --exclude ".DS_Store"
+            --exclude "*" \
+            --include "*.html" \
+            --include "*.css" \
+            --include "*.js" \
+            --include "images/*" 
 
       - name: Invalidate CloudFront cache
         run: |
