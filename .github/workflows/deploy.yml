@@ -29,7 +29,7 @@ jobs:
       - name: Sync files to S3
         run: |
           aws s3 sync ${{ github.workspace }}/resume-website-files s3://www.cloudwithsarah.com \
-            --delete \  # Remove files in S3 not present locally
+            --delete \  
             --exclude ".git/*" \
             --exclude ".DS_Store"
 
