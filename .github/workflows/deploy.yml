@@ -28,11 +28,11 @@ jobs:
 
       - name: Sync files to S3
         run: |
-          aws s3 sync ./resume-website-files s3://www.cloudwithsarah.com \
+          aws s3 sync ../resume-website-files s3://www.cloudwithsarah.com \
             --delete \  # Remove files in S3 not present locally
             --exclude ".git/*" \
             --exclude ".DS_Store"
-            
+
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
