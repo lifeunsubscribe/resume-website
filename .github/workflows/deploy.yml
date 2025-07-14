@@ -33,11 +33,11 @@ jobs:
             --exclude ".git/*" \
             --exclude ".DS_Store"
 
-      # - name: Invalidate CloudFront cache
-      #   run: |
-      #     aws cloudfront create-invalidation \
-      #       --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
-      #       --paths "/*"
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_ID }} \
+            --paths "/*"
 
-      - name: Deploy with CDK
-        run: npx cdk deploy --require-approval never
+      # - name: Deploy with CDK
+      #   run: npx cdk deploy --require-approval never
