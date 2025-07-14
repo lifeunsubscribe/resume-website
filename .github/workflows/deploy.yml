@@ -34,7 +34,7 @@ jobs:
             --include "*.html" \
             --include "*.css" \
             --include "*.js" \
-            --include "images/*" 
+            --exclude "images/headshot.JPG"
 
       - name: Invalidate CloudFront cache
         run: |
