@@ -17,12 +17,12 @@ export class GitHubActionsRoleStack extends cdk.Stack {
             'arn:aws:s3:::www.cloudwithsarah.com'
         );
 
-        // GitHub OIDC Provider (already exists in AWS, but we reference it)
-        const githubOidcProvider = iam.OpenIdConnectProvider.fromOpenIdConnectProviderArn(
-            this,
-            'GitHubOidcProvider',
-            'arn:aws:iam::342587863995:oidc-provider/token.actions.githubusercontent.com'
-        );
+        // OIDC provider for GitHub Actions
+        const githubOidcProvider = new iam.OpenIdConnectProvider(this, 'GitHubOidcProvider', {
+            url: 'https://token.actions.githubusercontent.com',
+            clientIds: ['sts.amazonaws.com'], // GitHub uses this to authenticate
+            thumbprints: ['6938fd4d98bab03faadb97b34396831e3780aea1'], // GitHub's OIDC thumbprint
+        });
 
         // IAM Role for GitHub Actions
         this.githubActionsRole = new iam.Role(this, 'GitHubActionsRole', {
