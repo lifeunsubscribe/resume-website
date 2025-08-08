@@ -99,7 +99,7 @@ header {
 }
 
 h1 {
-    font-family: 'Baloo 2', cursive;
+    font-family: Brittany;
     font-size: 3rem;
     color: white;
     text-shadow: 2px 2px 0 var(--accent-color),
@@ -322,6 +322,12 @@ footer {
     padding: 1.5rem;
     background-color: var(--light-color);
     color: var(--text-color);
+}
+
+@font-face {
+    font-family: Brittany;
+    src: url("https://cloudwithsarah.com/fonts/BrittanySignature.ttf");
+    font-weight: bold;
 }
 
 @keyframes fadeIn {
