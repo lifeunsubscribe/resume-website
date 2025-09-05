@@ -99,12 +99,13 @@ header {
 }
 
 h1 {
-    font-family: Brittany;
+    font-family: 'Brittany';
     font-size: 3rem;
     color: white;
     text-shadow: 2px 2px 0 var(--accent-color),
         6px 6px 0 rgba(0, 0, 0, 0.1);
-    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
     animation: bounce 1s infinite alternate;
     display: inline-block;
 }
@@ -325,8 +326,8 @@ footer {
 }
 
 @font-face {
-    font-family: Brittany;
-    src: url("https://cloudwithsarah.com/fonts/BrittanySignature.ttf");
+    font-family: 'Brittany';
+    src: url('fonts/BrittanySignature.ttf') format('truetype');
     font-weight: bold;
 }
 
