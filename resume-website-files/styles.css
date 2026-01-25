@@ -76,8 +76,19 @@ h1 {
     color: white;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
+    line-height: 1;
     font-variant: small-caps;
+}
+
+.tagline {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 0;
+    margin-top: 0.15rem;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
 }
 
 h2 {
@@ -426,12 +437,24 @@ footer {
     transform: translateY(-3px);
 }
 
+/* Resume Section */
+.resume-section {
+    margin-bottom: 1.5rem;
+}
+
+.resume-label {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
 /* Resume Download Buttons Container */
 .resume-download-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-bottom: 1.5rem;
     flex-wrap: wrap;
 }
 
@@ -507,6 +530,13 @@ footer.old {
     h1 {
         font-size: 2rem;
         letter-spacing: 0.1em;
+        margin-bottom: 0;
+        line-height: 1;
+    }
+
+    .tagline {
+        font-size: 1rem;
+        margin-top: 0.1rem;
     }
 
     h2 {
