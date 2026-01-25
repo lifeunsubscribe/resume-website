@@ -4,7 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Professional Resume</title>
+    <meta name="description" content="Sarah Wadley - Software Engineer specializing in cloud architecture, high-volume data pipelines, and full-stack development">
+    <meta property="og:title" content="Sarah Wadley | Software Engineer">
+    <meta property="og:description" content="Portfolio showcasing cloud architecture, ETL systems processing 500M+ records, and defense industry software experience">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.cloudwithsarah.com">
+    <title>Sarah Wadley | Software Engineer & Cloud Architect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -18,24 +26,21 @@
             </div>
             <div class="header-text">
                 <h1>Sarah Wadley</h1>
-                <h3>Cloud Solutions Architect and Full Stack Software Engineer</h3>
+                <h3>Software Engineer | Cloud Architect</h3>
                 <div class="social-links">
-                    <a href="https://www.linkedin.com/in/sarah-wadley/"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/lifeunsubscribe"><i class="fab fa-github"></i></a>
-                    <a href="mailto:sarah_wadley@outlook.com"><i class="fas fa-envelope"></i></a>
+                    <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/lifeunsubscribe" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                    <a href="mailto:sarah_wadley@outlook.com" aria-label="Email Contact"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
         </div>
-        <!-- <div class="visitor-count">
-            <p>This site has been visited <span id="visits">0</span> times.</p>
-        </div> -->
-
     </header>
 
     <nav>
         <ul>
             <li><a href="#experience" class="nav-link active">Experience</a></li>
-            <li><a href="#education" class="nav-link">Education + Certifications</a></li>
+            <li><a href="#skills" class="nav-link">Technical Skills</a></li>
+            <li><a href="#education" class="nav-link">Education</a></li>
             <li><a href="#projects" class="nav-link">Projects</a></li>
         </ul>
     </nav>
@@ -45,125 +50,120 @@
             <h2><i class="fas fa-briefcase section-icon"></i> Work Experience</h2>
             <div class="timeline">
                 <div class="timeline-item">
-                    <h3>Cloud Solutions Architect</h3>
-                    <h4>Self Employed | 2025 - Present</h4>
-                    <button class="details-btn">More Details</button>
-                    <div class="details-content">
-                        <ul>
-                            <li>Designing and implementing cloud-based solutions for clients</li>
-                            <li>Architecting scalable and secure cloud infrastructures using AWS</li>
-                            <li>Providing technical guidance and support for cloud migration</li>
-                        </ul>
-                    </div>
+                    <h3>Software Engineer (Contract)</h3>
+                    <h4>Westgate Data Science | Remote | Sep 2025 – Jan 2026</h4>
+                    <ul>
+                        <li>Designed and implemented automated ETL pipeline processing 500M+ records daily into a 200GB database in 2-3 hour cycles, eliminating manual data processing entirely</li>
+                        <li>Built core data infrastructure powering risk assessment platform, enabling automated cross-reference analysis</li>
+                        <li>Developed standardized virtual environment setup scripts ensuring consistent dependencies across development and production servers</li>
+                    </ul>
                 </div>
                 <div class="timeline-item">
-                    <h3>Full Stack Software Engineer</h3>
-                    <h4>L3Harris Technologies, Inc | 2021 - 2024</h4>
-                    <p>Industry Standard Customer-Facing Diversified Technical Role.</p>
-                    <button class="details-btn">More Details</button>
-                    <div class="details-content">
-                        <ul>
-                            <li>Engaged with customers to discuss project objectives, make improvements, and develop
-                                hands-on software solutions</li>
-                            <li>Contributed clean, functional, high-quality, and testable code across various
-                                projects,
-                                along with unit tests and documentation</li>
-                            <li>Collaborated with cross-functional teams
-                                to accommodate rapidly changing deadlines and changing requirements</li>
-                            <li>Served several roles ranging from unit testing / integration to docker maintenance
-                                to
-                                data management/archive automation etc</li>
-                            <li>Performed daily stand up and weekly sprints with each team to reinforce effective
-                                communication </li>
-                            <li>Worked with several programming languages and frameworks including Python, Java,
-                                Android IDE, etc</li>
-                            <li>Exposed to a wide range of platforms+IDEs, development paradigms, and industry
-                                standard
-                                tools/practices including Git, Bitbucket, Atlassian tools (Jira, Confluence), and
-                                Jenkins - experience in CI/CD and SDLC processes s.a. Scrum and Agile Methodology
-                            </li>
-                        </ul>
-                    </div>
+                    <h3>Software Engineer – Space and Airborne Systems</h3>
+                    <h4>L3Harris Technologies | Palm Bay, FL | 2021 – 2024</h4>
+                    <ul>
+                        <li>Partnered with defense sector clients through monthly requirements sessions, delivering iterative releases across 2-week sprint cycles for nearly a year on primary project</li>
+                        <li>Implemented features in real-time during customer demonstrations, showcasing rapid prototyping capabilities and deep system knowledge</li>
+                        <li>Contributed to F-35 program through integration testing and failure analysis of mission-critical avionics modules</li>
+                        <li>Created documentation archival automation and onboarding workflows, improving team knowledge transfer processes</li>
+                        <li>Maintained containerized deployments for classified satellite communication systems requiring specialized security protocols</li>
+                    </ul>
                 </div>
                 <div class="timeline-item">
-                    <h3>Desk Assist + Coding Support</h3>
-                    <h4>FSU Innovation Hub | 2019 - 2020 </h4>
-                    <p>POC for 3D Printing and Conference Rental</p>
-                    <button class="details-btn">More Details</button>
-                    <div class="details-content">
-                        <ul>
-                            <li>Collaboratively built CreatorConnect, an online directory and recommendation engine
-                                for
-                                staffing qualified developers</li>
-                            <li>Led Hub tours for large groups (15-20) through technology facilities</li>
-                        </ul>
-                    </div>
+                    <h3>Research Assistant – Simulation Design</h3>
+                    <h4>Center for Advanced Power Systems, Florida State University | 2018 – 2019</h4>
+                    <ul>
+                        <li>Co-authored academic paper on large-scale power system simulation; designed Unity-based 3D visualization GUI for interactive power model analysis</li>
+                    </ul>
                 </div>
-                <div class="timeline-item">
-                    <h3>Research Intern</h3>
-                    <h4>Center for Advanced Power Systems | 2018 - 2019</h4>
-                    <p>Simulation Development and Design</p>
-                    <button class="details-btn">More Details</button>
-                    <div class="details-content">
-                        <ul>
-                            <li>Developed a Unity-based simulation for large-scale power systems, enhancing
-                                visualization and interaction</li>
-                            <li>Designed first GUI for interacting with different components and engaging power
-                                model at
-                                different levels of detail</li>
-                            <li>Documented framework, co-authored academic paper on the project, and presented it at
-                                a
-                                conference</li>
-                        </ul>
-                    </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <h2><i class="fas fa-code section-icon"></i> Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-terminal"></i> Languages</h3>
+                    <p>Python, Java, JavaScript/TypeScript, C++, SQL</p>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-cloud"></i> Cloud & Infrastructure</h3>
+                    <p>AWS (EC2, Lambda, S3, RDS), Docker, CI/CD pipelines, Jenkins, environment scripting</p>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Data & Backend</h3>
+                    <p>PostgreSQL, ETL pipeline design, REST APIs, Node.js, Django, high-volume data processing</p>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-tools"></i> Tools & Methods</h3>
+                    <p>Git, Jira, Confluence, Agile/Scrum, unit testing, technical documentation</p>
                 </div>
             </div>
         </section>
 
         <section id="education" class="section">
             <h2><i class="fas fa-graduation-cap section-icon"></i> Education</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Bachelor of Science in Computer Science</h3>
-                    <h4>Florida State University | 2016 - 2020</h4>
-
-                    <button class="details-btn">More Details</button>
-                    <div class="details-content">
-                        <p>Graduated with Honors, GPA: 3.8/4.0</p>
-                        <p>Relevant Coursework: Data Structures, Algorithms, Software Engineering, Cloud Computing</p>
-                        <p>Activities: Member of the FSU Coding Club, Volunteer at local tech meetups</p>
-                    </div>
-                </div>
+            <div class="education-item">
+                <h3>Bachelor of Science, Computer Science</h3>
+                <h4>Florida State University | 2020</h4>
             </div>
-            <br>
-            <h2><i class="fas fa-certificate section-icon"></i> Certifications</h2>
+
+            <h2 style="margin-top: 2rem;"><i class="fas fa-certificate section-icon"></i> Certifications</h2>
             <div class="certifications-grid">
                 <div class="cert-card">
                     <h3>AWS Certified Cloud Practitioner</h3>
-                    <p>Amazon Web Services | 2021</p>
-                    <button class="cert-btn">View Credential</button>
+                    <p>Amazon Web Services</p>
+                    <button class="cert-btn" data-credential-id="a998fd11d9f3463baf26c8a32f4b140e">View Credential</button>
+                </div>
+                <div class="cert-card">
+                    <h3>AWS Certified Solutions Architect – Associate</h3>
+                    <p>In Progress</p>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="section">
-            <h2><i class="fas fa-certificate section-icon"></i> Projects</h2>
-            <div class="certifications-grid">
-                <div>
-                    <h3>This Resume!</h3>
-                    <p>Hosted on a CloudFront Distribution with secure HTTPS protocol, the user never interacts with
-                        the private bucket directly but still recieves speedy access to highly available content.
-                        <br> Click 'More Details' to see architectural diagram and GitHub link.
-                    </p>
-                    <a href="https://github.com/lifeunsubscribe/resume-website">More Details</a>
+            <h2><i class="fas fa-project-diagram section-icon"></i> Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>ScreenMyProfile – Social Media Screening Tool</h3>
+                    <p>Building AI-powered social media analysis platform targeting security clearance applicants; architected registration API and multi-environment AWS infrastructure with PostgreSQL backend</p>
                 </div>
-            </div>
+                <div class="project-card">
+                    <h3>This Portfolio Site</h3>
+                    <p>Static site deployed via AWS CDK with S3, CloudFront (OAC), Route53, and ACM certificate. Fully automated infrastructure-as-code deployment.</p>
+                    <a href="https://github.com/lifeunsubscribe/resume-website" target="_blank" rel="noopener noreferrer" class="project-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>© <span id="current-year"></span> Sarah Wadley. All rights reserved.</p>
+        <div class="footer-content">
+            <h3>Let's Connect</h3>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:sarah_wadley@outlook.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <div class="resume-download-buttons">
+                <a href="resume/Sarah_Wadley_Resume.pdf" download class="download-resume-btn">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </a>
+                <a href="resume/Sarah_Wadley_Resume.docx" download class="download-resume-btn download-resume-btn-secondary">
+                    <i class="fas fa-file-word"></i> Download DOCX
+                </a>
+            </div>
+            <p class="footer-copyright">© <span id="current-year"></span> Sarah Wadley. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="script.js" defer></script>

@@ -43,6 +43,7 @@ Thumbs.db
 # Local development files
 .env
 *.env
+.envrc
 
 # Compiled files in the website directory (if you have any)
 resume-website/**/*.js
@@ -50,3 +51,4 @@ resume-website/**/*.css.map
 
 # Optional: Ignore the resume website assets if they're built elsewhere
 resume-website-files/images/ 
+resume-website-files/resume/ 

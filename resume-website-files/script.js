@@ -28,44 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Experience details toggle
-    const detailButtons = document.querySelectorAll('.details-btn');
-
-    detailButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const detailsContent = this.nextElementSibling;
-            detailsContent.classList.toggle('active');
-
-            // Change button text
-            if (detailsContent.classList.contains('active')) {
-                this.textContent = 'Hide Details';
-            } else {
-                this.textContent = 'More Details';
-            }
-        });
-    });
-
     // Certification buttons functionality
     const certButtons = document.querySelectorAll('.cert-btn');
 
     certButtons.forEach(button => {
         button.addEventListener('click', function () {
-            if (confirm('Opening Credential Verification Page\n Validation number: a998fd11d9f3463baf26c8a32f4b140e\n Verify anytime at: https://aws.amazon.com/verification/')) {
-                window.open('https://cp.certmetrics.com/amazon/en/public/verify/credential/a998fd11d9f3463baf26c8a32f4b140e', '_blank');
-
-            };
+            const credentialId = this.getAttribute('data-credential-id');
+            if (credentialId) {
+                window.open(`https://cp.certmetrics.com/amazon/en/public/verify/credential/${credentialId}`, '_blank', 'noopener,noreferrer');
+            }
         });
-    });
-
-    // Headshot hover effect
-    const headshotContainer = document.querySelector('.headshot-container');
-
-    headshotContainer.addEventListener('mouseenter', function () {
-        this.style.transform = 'scale(1.05)';
-    });
-
-    headshotContainer.addEventListener('mouseleave', function () {
-        this.style.transform = 'scale(1)';
     });
 
     // Animation on scroll
