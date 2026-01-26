@@ -5,6 +5,7 @@ on:
     branches: [ main ]       # Trigger on pushes to main
     paths:
       - 'resume-website-files/**'  # 👈 Only trigger when files in /website change
+      - 'diagrams/**'  # Regenerate diagrams when script changes
       - '!resume-website-files/README.md'  # Optional: exclude specific files
   pull_request:
     branches: [ main ]       # Optional: Run on PRs for validation
@@ -20,6 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Generate architecture diagrams
+        run: |
+          pip install diagrams
+          cd diagrams
+          python generate_diagrams.py
+          cp output/*.png ../resume-website-files/images/diagrams/
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -34,7 +50,17 @@ jobs:
             --include "*.html" \
             --include "*.css" \
             --include "*.js" \
-            --exclude "images/headshot.JPG"
+            --include "*.webp" \
+            --include "*.png" \
+            --include "*.jpg" \
+            --include "*.jpeg" \
+            --include "*.svg" \
+            --include "*.ico" \
+            --include "*.pdf" \
+            --include "*.docx" \
+            --include "*.ttf" \
+            --include "*.woff" \
+            --include "*.woff2"
 
       - name: Invalidate CloudFront cache
         run: |
