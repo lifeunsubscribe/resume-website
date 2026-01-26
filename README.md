@@ -136,17 +136,6 @@ cdk deploy --all
 ### Update Website Content
 Simply push changes to the `resume-website-files/` directory on the main branch - GitHub Actions handles the rest!
 
-## 📊 AWS Resources
-
-**Account:** 342587863995
-**Region:** us-east-1
-**Domain:** cloudwithsarah.com
-
-**Key Resources:**
-- S3 Bucket: `www.cloudwithsarah.com`
-- CloudFront Distribution: `EG3WGB7ERFXYG`
-- Route53 Hosted Zone: `Z0935238159PZ4YC8L3ZJ`
-
 ## 📝 License
 
 This infrastructure code and website design are © 2026 Sarah Wadley. Feel free to use the CDK patterns for inspiration, but please don't copy the website content.

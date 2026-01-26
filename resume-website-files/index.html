@@ -19,6 +19,20 @@
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Sarah Wadley",
+        "jobTitle": "Software Engineer",
+        "url": "https://www.cloudwithsarah.com",
+        "sameAs": [
+            "https://www.linkedin.com/in/sarah-wadley/",
+            "https://github.com/lifeunsubscribe"
+        ]
+    }
+    </script>
 </head>
 
 <body>
@@ -49,6 +63,9 @@
             <li><a href="#education" class="nav-link">Education</a></li>
             <li><a href="#projects" class="nav-link">Projects</a></li>
         </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
     </nav>
 
     <main>
@@ -142,21 +159,31 @@
         <section id="projects" class="section">
             <h2><i class="fas fa-project-diagram section-icon"></i> Projects</h2>
             <div class="projects-grid">
-                <div class="project-card">
+                <a href="projects/portfolio-site.html" class="project-card project-card-link">
                     <h3>This Portfolio Site</h3>
                     <p>Static site deployed via AWS CDK with S3, CloudFront (OAC), Route53, and ACM certificate. Fully
                         automated infrastructure-as-code deployment.</p>
-                    <a href="https://github.com/lifeunsubscribe/resume-website" target="_blank"
-                        rel="noopener noreferrer" class="project-link">
-                        <i class="fab fa-github"></i> View on GitHub
-                    </a>
-                </div>
-                <div class="project-card">
+                    <div class="project-actions">
+                        <span class="project-link-text">
+                            <i class="fas fa-arrow-right"></i> View Details
+                        </span>
+                        <span class="project-link github-link" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://github.com/lifeunsubscribe/resume-website', '_blank', 'noopener,noreferrer');">
+                            <i class="fab fa-github"></i> GitHub
+                        </span>
+                    </div>
+                </a>
+                <a href="projects/screenmyprofile.html" class="project-card project-card-link">
+                    <span class="project-badge">In Development</span>
                     <h3>ScreenMyProfile – Social Media Screening Tool</h3>
                     <p>Building AI-powered social media analysis platform targeting security clearance applicants;
                         architected registration API and multi-environment AWS infrastructure with PostgreSQL backend
                     </p>
-                </div>
+                    <div class="project-actions">
+                        <span class="project-link-text">
+                            <i class="fas fa-arrow-right"></i> View Details
+                        </span>
+                    </div>
+                </a>
             </div>
         </section>
     </main>

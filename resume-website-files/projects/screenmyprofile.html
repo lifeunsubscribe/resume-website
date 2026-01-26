@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="ScreenMyProfile - AI-powered social media screening platform for security clearance applicants">
+    <title>ScreenMyProfile | Sarah Wadley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-text">
+                <h1><a href="../#experience" style="color: inherit; text-decoration: none;">Sarah Wadley</a></h1>
+                <p class="tagline">Software Engineer | Cloud Architect</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../#experience" class="nav-link">Experience</a></li>
+            <li><a href="../#skills" class="nav-link">Technical Skills</a></li>
+            <li><a href="../#education" class="nav-link">Education</a></li>
+            <li><a href="../#projects" class="nav-link active">Projects</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <main class="project-detail">
+        <a href="../#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+
+        <article>
+            <header class="project-header">
+                <div class="status-banner in-development">
+                    <i class="fas fa-hard-hat"></i> In Development
+                </div>
+                <h2>ScreenMyProfile</h2>
+                <p class="project-subtitle">AI-Powered Social Media Screening for Security Clearance Applicants</p>
+            </header>
+
+            <section class="project-section">
+                <h3>The Problem</h3>
+                <p>Security clearance applicants face a challenging reality: investigators will review their social
+                    media presence, but applicants often have years of posts they've forgotten about. A single
+                    problematic post from a decade ago could derail a clearance application or, worse, surface during
+                    the investigation itself.</p>
+
+                <div class="problem-points">
+                    <div class="problem-item">
+                        <i class="fas fa-clock"></i>
+                        <p>Years of social media history are impossible to manually review</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-eye-slash"></i>
+                        <p>Forgotten posts may contain content that could raise flags</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-user-secret"></i>
+                        <p>Investigators will see what applicants missed</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>No existing tools designed for clearance-specific concerns</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h3>The Solution</h3>
+                <p>ScreenMyProfile uses AI to analyze social media content through the lens of security clearance
+                    adjudication guidelines. Rather than generic "sentiment analysis," the platform identifies specific
+                    categories that investigators look for:</p>
+                <ul>
+                    <li>Foreign contacts and influences</li>
+                    <li>Financial responsibility indicators</li>
+                    <li>Substance use references</li>
+                    <li>Criminal activity mentions</li>
+                    <li>Loyalty and allegiance concerns</li>
+                    <li>Personal conduct issues</li>
+                </ul>
+            </section>
+
+            <section class="project-section">
+                <h3>Architecture</h3>
+                <div class="architecture-diagram">
+                    <img src="../images/diagrams/screenmyprofile-architecture.svg" alt="ScreenMyProfile architecture diagram showing multi-environment AWS setup with React frontend, API Gateway, Lambda, PostgreSQL, and AI analysis">
+                </div>
+                <p>The platform is built on a scalable serverless architecture with multi-environment support:</p>
+                <ul>
+                    <li><strong>Frontend:</strong> React application with secure authentication via Cognito</li>
+                    <li><strong>API Layer:</strong> API Gateway with Lambda functions for processing</li>
+                    <li><strong>Data Storage:</strong> PostgreSQL on RDS for structured data, S3 for file storage</li>
+                    <li><strong>AI Processing:</strong> Dedicated analysis pipeline for content screening</li>
+                    <li><strong>Environments:</strong> Separate dev, staging, and production infrastructure</li>
+                </ul>
+            </section>
+
+            <section class="project-section">
+                <h3>Tech Stack</h3>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <i class="fab fa-react"></i>
+                        <h4>React</h4>
+                        <p>Frontend application</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-aws"></i>
+                        <h4>API Gateway</h4>
+                        <p>REST API management</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-aws"></i>
+                        <h4>Lambda</h4>
+                        <p>Serverless compute</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-database"></i>
+                        <h4>PostgreSQL</h4>
+                        <p>Primary database (RDS)</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-aws"></i>
+                        <h4>Cognito</h4>
+                        <p>Authentication & authorization</p>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-robot"></i>
+                        <h4>AI/ML</h4>
+                        <p>Content analysis engine</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h3>Current Status</h3>
+                <div class="status-list">
+                    <div class="status-item completed">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Multi-environment AWS infrastructure (CDK)</span>
+                    </div>
+                    <div class="status-item completed">
+                        <i class="fas fa-check-circle"></i>
+                        <span>User registration API with PostgreSQL backend</span>
+                    </div>
+                    <div class="status-item completed">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Authentication flow with Cognito</span>
+                    </div>
+                    <div class="status-item in-progress">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Social media data ingestion pipeline</span>
+                    </div>
+                    <div class="status-item planned">
+                        <i class="fas fa-circle"></i>
+                        <span>AI analysis engine integration</span>
+                    </div>
+                    <div class="status-item planned">
+                        <i class="fas fa-circle"></i>
+                        <span>Results dashboard and reporting</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <h3>Roadmap</h3>
+                <div class="roadmap">
+                    <div class="roadmap-phase">
+                        <h4>Phase 1: Foundation</h4>
+                        <p>Core infrastructure, authentication, and basic API</p>
+                        <span class="phase-status completed">Completed</span>
+                    </div>
+                    <div class="roadmap-phase">
+                        <h4>Phase 2: Data Pipeline</h4>
+                        <p>Social media integration and data ingestion</p>
+                        <span class="phase-status in-progress">In Progress</span>
+                    </div>
+                    <div class="roadmap-phase">
+                        <h4>Phase 3: Analysis</h4>
+                        <p>AI-powered content screening and categorization</p>
+                        <span class="phase-status planned">Planned</span>
+                    </div>
+                    <div class="roadmap-phase">
+                        <h4>Phase 4: Launch</h4>
+                        <p>User dashboard, reporting, and public beta</p>
+                        <span class="phase-status planned">Planned</span>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>Let's Connect</h3>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:sarah_wadley@outlook.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <p class="footer-copyright">&copy; <span id="current-year"></span> Sarah Wadley. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+</body>
+
+</html>

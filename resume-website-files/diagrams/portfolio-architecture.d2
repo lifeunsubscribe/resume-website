@@ -1,0 +1,63 @@
+direction: right
+
+title: Portfolio Site Architecture {
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+}
+
+# Infrastructure Components
+user: User {
+  shape: person
+  style.fill: "#E8F4FD"
+}
+
+route53: Route53 {
+  shape: cloud
+  style.fill: "#FF9900"
+}
+
+cloudfront: CloudFront {
+  shape: hexagon
+  style.fill: "#8C4FFF"
+}
+
+s3: S3 Bucket {
+  shape: cylinder
+  style.fill: "#569A31"
+}
+
+acm: ACM Certificate {
+  shape: document
+  style.fill: "#DD344C"
+}
+
+# CI/CD Components
+github: GitHub Repo {
+  shape: rectangle
+  style.fill: "#24292e"
+  style.font-color: "#ffffff"
+}
+
+actions: GitHub Actions {
+  shape: rectangle
+  style.fill: "#2088FF"
+}
+
+oidc: OIDC Provider {
+  shape: diamond
+  style.fill: "#FF9900"
+}
+
+# User Flow
+user -> route53: DNS lookup
+route53 -> cloudfront: Resolve
+acm -> cloudfront: HTTPS
+cloudfront -> s3: OAC fetch
+
+# CI/CD Flow
+github -> actions: Push trigger
+actions -> oidc: Assume role
+oidc -> s3: Deploy files
+actions -> cloudfront: Invalidate cache

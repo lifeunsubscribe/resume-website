@@ -1,0 +1,75 @@
+direction: right
+
+title: ScreenMyProfile Architecture {
+  near: top-center
+  shape: text
+  style.font-size: 24
+  style.bold: true
+}
+
+# User-Facing
+user: User {
+  shape: person
+  style.fill: "#E8F4FD"
+}
+
+frontend: React Frontend {
+  shape: rectangle
+  style.fill: "#61DAFB"
+}
+
+# API Layer
+api: API Gateway {
+  shape: hexagon
+  style.fill: "#FF9900"
+}
+
+lambda: Lambda Functions {
+  shape: rectangle
+  style.fill: "#FF9900"
+}
+
+# Data Layer
+rds: PostgreSQL (RDS) {
+  shape: cylinder
+  style.fill: "#3B48CC"
+}
+
+s3: S3 Storage {
+  shape: cylinder
+  style.fill: "#569A31"
+}
+
+# AI Processing
+ai: AI Analysis {
+  shape: diamond
+  style.fill: "#8C4FFF"
+}
+
+# Security
+cognito: Cognito {
+  shape: cloud
+  style.fill: "#DD344C"
+}
+
+# Environments
+environments: Multi-Environment {
+  dev: Development {
+    style.fill: "#E8F4FD"
+  }
+  staging: Staging {
+    style.fill: "#FFF3CD"
+  }
+  prod: Production {
+    style.fill: "#D4EDDA"
+  }
+}
+
+# Connections
+user -> frontend: Access app
+frontend -> cognito: Auth
+frontend -> api: API calls
+api -> lambda: Process
+lambda -> rds: Query/Store
+lambda -> s3: File storage
+lambda -> ai: Analyze content
