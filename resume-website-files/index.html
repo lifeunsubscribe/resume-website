@@ -3,6 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+    // Intercept hash before browser can scroll to it (fixes Safari)
+    if (window.location.hash) {
+        window.__targetSection = window.location.hash.substring(1);
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Sarah Wadley - Software Engineer specializing in cloud architecture, high-volume data pipelines, and full-stack development">

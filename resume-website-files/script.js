@@ -46,26 +46,126 @@ document.addEventListener('DOMContentLoaded', function () {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('.section');
 
+    // Function to activate a section by ID
+    const activateSection = (sectionId) => {
+        const targetSection = document.getElementById(sectionId);
+        if (!targetSection) return false;
+
+        // Remove active class from all links and sections
+        navLinks.forEach(navLink => navLink.classList.remove('active'));
+        sections.forEach(section => section.classList.remove('active-section'));
+
+        // Add active class to corresponding link and section
+        const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+        if (correspondingLink) correspondingLink.classList.add('active');
+        targetSection.classList.add('active-section');
+
+        return true;
+    };
+
+    // Check for target section from sessionStorage (set by cross-page navigation)
+    // or from inline script that intercepted hash, or from URL hash
+    const storedSection = sessionStorage.getItem('targetSection');
+    const targetSection = storedSection || window.__targetSection || (window.location.hash ? window.location.hash.substring(1) : null);
+
+    // Clear the stored section after reading
+    if (storedSection) {
+        sessionStorage.removeItem('targetSection');
+    }
+
+    if (targetSection) {
+        activateSection(targetSection);
+
+        // Function to scroll to the correct position
+        const scrollToTarget = () => {
+            const header = document.querySelector('header');
+            const scrollTarget = header ? header.offsetHeight - 20 : 0;
+            window.scrollTo({ top: scrollTarget, behavior: 'instant' });
+
+            // Update URL to reflect the section
+            if (!window.location.hash || window.location.hash.substring(1) !== targetSection) {
+                history.replaceState(null, null, '#' + targetSection);
+            }
+        };
+
+        // If coming from cross-page navigation (sessionStorage), wait for everything to load
+        if (storedSection) {
+            // Wait for fonts and images, then add a small delay for Safari to settle
+            Promise.all([
+                document.fonts.ready,
+                new Promise(resolve => {
+                    const headshot = document.querySelector('.headshot');
+                    if (headshot && !headshot.complete) {
+                        headshot.addEventListener('load', resolve);
+                    } else {
+                        resolve();
+                    }
+                })
+            ]).then(() => {
+                // Small timeout lets Safari fully complete rendering
+                setTimeout(scrollToTarget, 50);
+            });
+        } else {
+            requestAnimationFrame(scrollToTarget);
+        }
+    }
+
+    // Handle all cross-page hash links (back links, header links, etc.)
+    document.querySelectorAll('a[href*="#"]').forEach(link => {
+        const href = link.getAttribute('href');
+        // Skip if it's a same-page hash link (handled by nav-link handler)
+        if (href.startsWith('#')) return;
+        // Skip if already has nav-link class (handled above)
+        if (link.classList.contains('nav-link')) return;
+
+        // Handle cross-page hash links
+        if (href.includes('#')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const [basePath, hash] = href.split('#');
+                sessionStorage.setItem('targetSection', hash);
+                window.location.href = basePath || '../';
+            });
+        }
+    });
+
+    // Handle nav link clicks
     navLinks.forEach(link => {
         link.addEventListener('click', function (e) {
-            e.preventDefault();
+            const href = this.getAttribute('href');
 
-            // Remove active class from all links and sections
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
-            sections.forEach(section => section.classList.remove('active-section'));
+            // Only prevent default for same-page navigation (hash links)
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
 
-            // Add active class to clicked link
-            this.classList.add('active');
+                // Update URL hash
+                history.pushState(null, null, href);
 
-            // Show corresponding section
-            const targetId = this.getAttribute('href').substring(1);
-            document.getElementById(targetId).classList.add('active-section');
+                // Activate section
+                activateSection(targetId);
 
-            // Smooth scroll to section
-            document.getElementById(targetId).scrollIntoView({
-                behavior: 'smooth'
-            });
+                // Scroll to show blue header strip at top with nav below
+                const header = document.querySelector('header');
+                const scrollTarget = header ? header.offsetHeight - 20 : 0;
+                window.scrollTo({ top: scrollTarget, behavior: 'instant' });
+            }
+            // For cross-page navigation with hash (like ../#projects)
+            // Intercept and use sessionStorage to avoid Safari's hash scroll behavior
+            else if (href.includes('#')) {
+                e.preventDefault();
+                const [basePath, hash] = href.split('#');
+                sessionStorage.setItem('targetSection', hash);
+                window.location.href = basePath || '../';
+            }
         });
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', () => {
+        if (window.location.hash) {
+            activateSection(window.location.hash.substring(1));
+        }
     });
 
     // Certification buttons functionality
