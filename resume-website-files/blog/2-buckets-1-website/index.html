@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 Buckets 1 Website: How CloudFront Changes AWS Static Site Redirects | Cloud With Sarah</title>
+    <meta name="description"
+        content="I followed the canonical AWS approach, created zombie infrastructure, and discovered the modern way to handle www redirects with CloudFront Functions.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="2 Buckets 1 Website: How CloudFront Changes AWS Static Site Redirects">
+    <meta property="og:description"
+        content="I followed the canonical AWS approach, created zombie infrastructure, and discovered the modern way to handle www redirects with CloudFront Functions.">
+    <meta property="og:image" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/images/og-image.png">
+    <meta property="og:url" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/">
+    <meta property="og:type" content="article">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="/#experience" class="nav-link">Experience</a></li>
+            <li><a href="/#skills" class="nav-link">Technical Skills</a></li>
+            <li><a href="/#education" class="nav-link">Education</a></li>
+            <li><a href="/#projects" class="nav-link">Projects</a></li>
+            <li><a href="/blog/" class="nav-link active">Blog</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <article class="blog-post">
+        <header>
+            <h1>2 Buckets 1 Website</h1>
+            <h2>How CloudFront Changes this Fundamental Rule</h2>
+            <p><em>I followed the "canonical" AWS approach, created zombie infrastructure, and discovered the modern way
+                    nobody's talking about.</em></p>
+            <div class="post-meta">
+                <div class="author-info">
+                    <picture>
+                        <source srcset="/images/headshot.webp" type="image/webp">
+                        <img src="/images/headshot.JPG" alt="Sarah Wadley" class="author-avatar">
+                    </picture>
+                    <div class="author-details">
+                        <span class="author-name">Sarah Wadley</span>
+                        <time datetime="2026-01-27">Jan 27, 2026</time>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="post-content">
+            <h2>The Setup</h2>
+
+            <p>So there I was building my portfolio website on AWS. <br> S3, CloudFront, Route53 - the whole serverless
+                static site stack. Everything was going great until I got to a seemingly simple question:</p>
+
+            <p><strong>How do I make <code>cloudwithsarah.com</code> redirect to
+                    <code>www.cloudwithsarah.com</code>?</strong></p>
+
+            <p>I did what any reasonable developer does: I googled it. I found the <a
+                    href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html"
+                    target="_blank" rel="noopener noreferrer">AWS docs</a>. I found tutorials. I found a <a
+                    href="https://www.reddit.com/r/aws/comments/7va4vk/do_you_have_to_make_two_s3_buckets_for_your/"
+                    target="_blank" rel="noopener noreferrer">Reddit thread from 2018</a> where someone asked the exact
+                same question.</p>
+
+            <p>The answer was unanimous: <strong>you need two S3 buckets.</strong></p>
+
+            <figure class="blog-image">
+                <img src="images/jim-halpert-face.gif" alt="Guess I'll just do what the docs say" loading="lazy">
+            </figure>
+
+            <p>One bucket holds your actual website files. The other bucket exists solely to redirect traffic to the
+                first one. The AWS docs literally say:</p>
+
+            <blockquote>
+                <p>"If your root domain is example.com, and you want to serve requests for both http://example.com and
+                    http://www.example.com, <strong>you must create two buckets</strong> named example.com and
+                    www.example.com."</p>
+            </blockquote>
+
+            <p>Seems official enough. <a
+                    href="https://stackoverflow.com/questions/10115799/set-up-dns-based-url-forwarding-in-amazon-route53"
+                    target="_blank" rel="noopener noreferrer">Stack Overflow agreed</a>. <a
+                    href="https://www.reddit.com/r/aws/comments/7va4vk/do_you_have_to_make_two_s3_buckets_for_your/"
+                    target="_blank" rel="noopener noreferrer">Reddit agreed</a>. <a
+                    href="https://www.stxnext.com/blog/devops-hosting-static-websites-aws-s3" target="_blank"
+                    rel="noopener noreferrer">Blog posts from 2025 are STILL recommending it</a>. Who was I to argue?
+            </p>
+
+            <p>So I created two buckets, wrote my CDK code, deployed everything, tested both URLs, and they both worked.
+            </p>
+
+            <p>Mission accomplished.</p>
+
+            <p>...Right?</p>
+
+            <hr>
+
+            <h2>Why Does This Even Matter?</h2>
+
+            <p>Before we go further, let's talk about what problem is solved by using bucket redirect (rather than just
+                using two duplicate buckets named <code>www.example.com</code> and <code>example.com</code>).</p>
+
+            <p><strong>The SEO Problem:</strong> If both URLs serve the same content, search engines might treat them as
+                two separate websites with identical content. This can dilute your page rank; Google sees two mediocre
+                sites instead of one authoritative one. They've gotten smarter about this, but "just do the redirect" is
+                still standard advice.</p>
+
+            <p><strong>The Cache Problem:</strong> If CloudFront caches content for both
+                <code>www.example.com/page</code> AND <code>example.com/page</code>, you're storing the same bytes twice
+                at every edge location worldwide. That's wasteful and potentially confusing.
+            </p>
+
+            <p><strong>The User Problem:</strong> Some people type <code>www</code>, some don't. You want them all to
+                end up in the same place with a consistent URL in their address bar.</p>
+
+            <p><strong>The Solution:</strong> Pick one (www or non-www) as your "canonical" URL, and 301 redirect the
+                other. A 301 tells browsers and search engines "this content has permanently moved here, so update your
+                bookmarks."</p>
+
+            <p>Simple enough concept. The implementation? That's where AWS gets... AWS-y.</p>
+
+            <hr>
+
+            <h2>The "Official" Two-Bucket Method</h2>
+
+            <p>Here's what the AWS docs tell you to do (and what countless tutorials repeat):</p>
+
+            <figure class="blog-image architecture-diagram">
+                <img src="images/s3-only-approach.png"
+                    alt="S3-Only redirect architecture showing User to Route53 to S3 redirect bucket to S3 content bucket"
+                    loading="lazy">
+                <figcaption>The classic S3-only approach: two buckets, redirect bucket catches traffic</figcaption>
+            </figure>
+
+            <p><strong>Why S3 needs two buckets for this:</strong></p>
+
+            <p>S3's static website hosting feature can do ONE of two things:</p>
+            <ol>
+
+                <li><strong>Host content</strong> (serve your HTML/CSS/JS files) </li>
+
+                <li><strong>Redirect all requests</strong> to another hostname</li>
+
+            </ol>
+
+            <p>It cannot do both. There's no "serve content for www requests but redirect non-www requests" option.<br>
+                If you want redirection behavior, you need to create a separate bucket configured just for that purpose.
+                The
+                redirect bucket is essentially a single-purpose traffic cop.</p>
+
+            <p>This made perfect sense to me. I implemented it in CDK:</p>
+
+            <pre><code class="language-typescript">// The content bucket - holds actual website files
+const websiteBucket = new s3.Bucket(this, 'WebsiteBucket', {
+  bucketName: 'www.cloudwithsarah.com',
+  // ... website hosting config
+});
+
+// The redirect bucket - completely empty, just redirects
+const redirectBucket = new s3.Bucket(this, 'RedirectBucket', {
+  bucketName: 'cloudwithsarah.com',
+  websiteRedirect: {
+    hostName: 'www.cloudwithsarah.com',
+    protocol: s3.RedirectProtocol.HTTPS
+  },
+});</code></pre>
+
+            <p>Both URLs worked. I moved on with my life.</p>
+
+            <hr>
+
+            <h2>Fast Forward: Something Doesn't Add Up</h2>
+
+            <p>Months later, I was optimizing my site and started poking around my infrastructure. I ran a simple curl
+                command to check my headers:</p>
+
+            <pre><code class="language-bash">curl -I https://cloudwithsarah.com</code></pre>
+
+            <p><strong>If my redirect was working, I would see:</strong></p>
+            <pre><code class="language-bash">HTTP/2 301
+location: https://www.cloudwithsarah.com/</code></pre>
+
+            <p><strong>But what I actually saw was:</strong></p>
+            <pre><code class="language-bash">HTTP/2 200
+content-type: text/html
+server: AmazonS3
+x-cache: Miss from cloudfront</code></pre>
+
+            <figure class="blog-image">
+                <img src="images/confused-math-lady.jpg" alt="Confused math lady meme" loading="lazy">
+            </figure>
+
+            <p>Headers looked great! But <strong>HTTP 200</strong> is not a redirect... That's a successful response
+                serving actual content.</p>
+
+            <p>I checked my browser. Typed <code>https://cloudwithsarah.com/</code> explicitly in the search bar. The
+                page loaded.. but
+                the URL bar still showed <code>https://cloudwithsarah.com</code>. It never changed to <code>www</code>.
+            </p>
+
+            <p>So my redirect bucket was doing absolutely nothing. Both URLs were just.. serving the same
+                content from a single CloudFront distribution.
+            </p>
+            <p>In other words, the redirect bucket never needed to redirect because CloudFront already points both
+                URLs directly at the content bucket.
+            </p>
+
+            <figure class="blog-image">
+                <img src="images/always-has-been.png" alt="Always has been astronaut meme" loading="lazy">
+            </figure>
+
+            <h3>The Browser Deception</h3>
+
+            <p>Here's what made this extra sneaky: sometimes when I typed <code>cloudwithsarah.com</code> (without the
+                https://), it DID show up as <code>www.cloudwithsarah.com</code>.</p>
+
+            <p>But that wasn't my redirect working — that was my browser "helpfully" autocompleting from my browsing
+                history! When I explicitly typed <code>https://cloudwithsarah.com/</code>, bypassing autocomplete, the
+                truth was revealed: no redirect. Just duplicate content.</p>
+
+            <p><strong>Lesson:</strong> Always test redirects with <code>curl -I</code>, not by typing in your browser.
+                Browsers lie to you. They're trying to be helpful. They are not.</p>
+
+            <hr>
+
+            <h2>Investigating the Zombie Bucket 🧟</h2>
+
+            <p>Here's what I found when I actually looked at my CDK code.
+                <br><strong>Both Route53 A records point to CloudFront.</strong> Not to S3:
+            </p>
+
+            <pre><code class="language-typescript">// My CloudFront distribution
+const distribution = new cloudfront.Distribution(this, 'Distribution', {
+  domainNames: ['cloudwithsarah.com', 'www.cloudwithsarah.com'],  // 👀 BOTH domains
+  defaultBehavior: {
+    origin: S3BucketOrigin.withOriginAccessControl(websiteBucket),  // Points to www bucket
+  },
+});
+
+// My Route53 records
+new route53.ARecord(this, 'RootRecord', {
+  recordName: 'cloudwithsarah.com',
+  target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution))  // 👀 CloudFront
+});
+
+new route53.ARecord(this, 'WwwRecord', {
+  recordName: 'www.cloudwithsarah.com',
+  target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution))  // 👀 CloudFront
+});</code></pre>
+
+            <p>See the problem?</p>
+
+            <p> CloudFront is configured to
+                serve content from <code>www.cloudwithsarah.com</code> bucket for BOTH domain names.</p>
+
+            <p>The redirect bucket exists. It's configured correctly. It would totally redirect if anyone ever talked to
+                it.</p>
+
+            <p>But nobody does.</p>
+
+            <p>Traffic for <code>cloudwithsarah.com</code> goes: Route53 → CloudFront → content bucket → serves content.
+                The redirect bucket is never consulted. It's a ghost. A zombie. A perfectly configured piece of
+                infrastructure doing absolutely nothing, waiting for traffic that will never arrive.</p>
+
+
+            <figure class="blog-image">
+                <img src="images/walking-dead-zombie.png" alt="zombie waiting for traffic" loading="lazy">
+            </figure>
+            <hr>
+
+            <h2 style="font-size: 2rem;">⚠️ How CloudFront Changes the Game</h2>
+
+            <p>This is the part nobody explains clearly. <strong>This is the whole point of this article.</strong> If
+                you take nothing else away, take this:</p>
+
+            <h3>The Two-Bucket Pattern Was Designed for S3-Only Hosting</h3>
+
+            <p>The AWS docs, the tutorials, the Stack Overflow answers — they all assume a world where <strong>S3 is
+                    your edge</strong>. Meaning: users' browsers talk directly to S3.</p>
+
+            <p>In that S3-only world:</p>
+
+            <div class="explanation-box s3-approach">
+                <div class="box-header">
+                    <h4>S3-Only Hosting</h4>
+                    <span class="box-subtitle">What the tutorials assume</span>
+                </div>
+                <ol class="flow-steps">
+                    <li>User visits example.com</li>
+                    <li>Route53 points to S3 website endpoint for example.com</li>
+                    <li>S3 redirect bucket catches the request</li>
+                    <li>S3 returns 301 redirect to www.example.com</li>
+                    <li>Browser follows redirect</li>
+                    <li>Route53 points to S3 website endpoint for www bucket</li>
+                    <li>S3 serves content</li>
+                </ol>
+                <p class="box-conclusion">
+                    <strong>The redirect bucket is IN THE PATH.</strong> It gets hit.
+                </p>
+            </div>
+
+            <p><strong>But modern static sites use CloudFront.</strong> You need CloudFront for:</p>
+            <ul>
+                <li>HTTPS with a custom domain (S3 website endpoints are HTTP-only!)</li>
+                <li>Security (private buckets with OAC)</li>
+                <li>Performance (global CDN caching)</li>
+                <li>Security headers (CSP, HSTS, etc.)</li>
+            </ul>
+
+            <p>And when you add CloudFront, the architecture fundamentally changes:</p>
+
+            <div class="explanation-box cloudfront-approach">
+                <div class="box-header">
+                    <h4>CloudFront Hosting</h4>
+                    <span class="box-subtitle">What you're actually building</span>
+                </div>
+                <ol class="flow-steps">
+                    <li>User visits example.com</li>
+                    <li>Route53 points to CloudFront <em>(NOT S3!)</em></li>
+                    <li>CloudFront says "I serve both domains"</li>
+                    <li>CloudFront fetches from origin bucket</li>
+                    <li>Content is served</li>
+                    <li><strong>NO REDIRECT EVER HAPPENS</strong></li>
+                </ol>
+                <p class="box-conclusion">
+                    <strong>The redirect bucket is NEVER IN THE PATH.</strong> Route53 bypasses it entirely by going to
+                    CloudFront.
+                </p>
+            </div>
+
+            <p><strong>CloudFront becomes your edge.</strong> Route53 points to CloudFront, not S3. CloudFront handles
+                both domains. The redirect bucket sits there, configured perfectly, completely unused.</p>
+
+            <p>This is why I had zombie infrastructure. I followed S3-only tutorials while building a CloudFront
+                architecture.</p>
+
+            <hr>
+
+            <h2>The Options: A Complete Comparison</h2>
+
+            <p>So what ARE your actual options for handling www redirects in 2026?</p>
+
+            <h3>Option 1: Two Buckets + Two CloudFront Distributions</h3>
+
+            <p>The "make the old pattern work with CloudFront" approach.</p>
+
+            <figure class="blog-image architecture-diagram">
+                <img src="images/two-buckets-two-distributions.png"
+                    alt="Two buckets with two CloudFront distributions architecture diagram showing the legacy redirect pattern"
+                    loading="lazy">
+                <figcaption>The legacy pattern: 2 S3 buckets, 2 CloudFront distros, redirect flows through
+                    both</figcaption>
+            </figure>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Follows AWS docs</td>
+                        <td>Two CloudFront distributions ($$$)</td>
+                    </tr>
+                    <tr>
+                        <td>Conceptually familiar</td>
+                        <td>Two S3 buckets to manage</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Redirect bucket needs public access OR website endpoint origin</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>More complex infrastructure</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>More things that can break</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Why people choose this:</strong> It's what the docs say. It's what tutorials show. It feels
+                "official."</p>
+
+            <p><strong>Why it's not ideal:</strong> You're paying for and managing double the infrastructure just to
+                redirect traffic. And the redirect bucket's requirement for public access or website endpoint origin
+                conflicts with modern OAC security practices.</p>
+
+            <hr>
+
+            <h3>Option 2: One Bucket + Both Domains on CloudFront (No Redirect)</h3>
+
+            <p>This is what I accidentally built. 🤡</p>
+
+            <figure class="blog-image architecture-diagram">
+                <img src="images/cloudfront-no-redirect.png"
+                    alt="CloudFront serving both domains without redirect, with zombie S3 bucket shown disconnected"
+                    loading="lazy">
+                <figcaption>My first draft: both domains served, no redirect, zombie bucket ignored
+                </figcaption>
+            </figure>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Simple setup</td>
+                        <td>NO REDIRECT — both URLs serve content</td>
+                    </tr>
+                    <tr>
+                        <td>Single distribution</td>
+                        <td>Duplicate content SEO issues</td>
+                    </tr>
+                    <tr>
+                        <td>Works with private buckets + OAC</td>
+                        <td>Cache inefficiency</td>
+                    </tr>
+                    <tr>
+                        <td>Cheap</td>
+                        <td>Unprofessional (different URLs for same content)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Why people end up here:</strong> They follow CloudFront tutorials that don't mention redirects,
+                or they follow redirect tutorials without realizing CloudFront changes everything. The site "works" so
+                they don't investigate further.</p>
+
+            <p><strong>Why it's problematic:</strong> You're telling search engines you have two websites with identical
+                content. That's not a great look.</p>
+
+            <hr>
+
+            <h3>Option 3: CloudFront Functions (The Modern Way) ✨</h3>
+
+            <p>One bucket. One distribution. Actual redirect. Edge-powered.</p>
+
+            <figure class="blog-image architecture-diagram">
+                <img src="images/cloudfront-function-approach.png"
+                    alt="CloudFront Function redirect architecture showing the function intercepting non-www requests"
+                    loading="lazy">
+                <figcaption>The modern approach: CloudFront Function handles redirect at the edge</figcaption>
+            </figure>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Single S3 bucket</td>
+                        <td>Requires writing ~10 lines of JavaScript</td>
+                    </tr>
+                    <tr>
+                        <td>Single CloudFront distribution</td>
+                        <td>...that's it. That's the only con.</td>
+                    </tr>
+                    <tr>
+                        <td>Proper 301 redirect</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Works with private buckets + OAC</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Runs at the edge (sub-millisecond)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>2 million FREE invocations/month</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Clean IaC (all in CDK)</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Why people don't know about this:</strong> CloudFront Functions launched in 2021. The tutorials,
+                Stack Overflow answers, and even some AWS docs predate this. The two-bucket pattern became "common
+                knowledge" before a better option existed.</p>
+
+            <p><strong>Why it's the right choice:</strong> It's simpler, cheaper, more secure, and actually works. The
+                only reason NOT to use it is if you don't have CloudFront — but if you don't have CloudFront in 2026,
+                you probably should.</p>
+
+            <hr>
+
+            <h3>Option 4: Lambda@Edge</h3>
+
+            <p>Like CloudFront Functions but more powerful (and more expensive).</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Can do complex logic</td>
+                        <td>$0.60 per million invocations (vs $0.10)</td>
+                    </tr>
+                    <tr>
+                        <td>Access to request body</td>
+                        <td>Higher latency</td>
+                    </tr>
+                    <tr>
+                        <td>Longer execution time</td>
+                        <td>More complex deployment</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>us-east-1 requirement</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Why you might choose this:</strong> You need to inspect request bodies, run for longer than 1ms,
+                or do something CloudFront Functions can't handle.</p>
+
+            <p><strong>Why it's overkill for redirects:</strong> A www redirect is, again, literally 10 lines of code
+                that runs
+                in microseconds. Lambda@Edge is like using a sledgehammer for a thumbtack.</p>
+
+            <hr>
+
+            <h2>The Solution: CloudFront Functions + CDK</h2>
+
+            <p>Here's how to actually implement www redirects the modern way.</p>
+
+            <h3>The CloudFront Function</h3>
+
+            <pre><code class="language-typescript">// In your CDK stack
+const wwwRedirect = new cloudfront.Function(this, 'WwwRedirect', {
+  functionName: 'www-redirect',
+  code: cloudfront.FunctionCode.fromInline(`
+    function handler(event) {
+      var request = event.request;
+      var host = request.headers.host.value;
+
+      // If request is for non-www, redirect to www
+      if (!host.startsWith('www.')) {
+        return {
+          statusCode: 301,
+          statusDescription: 'Moved Permanently',
+          headers: {
+            'location': { value: 'https://www.' + host + request.uri }
+          }
+        };
+      }
+
+      // Otherwise, continue to origin
+      return request;
+    }
+  `),
+});</code></pre>
+
+            <p>That's it. That's the whole redirect logic. 10 lines.</p>
+
+            <h3>Attach It to CloudFront</h3>
+
+            <pre><code class="language-typescript">const distribution = new cloudfront.Distribution(this, 'Distribution', {
+  domainNames: ['cloudwithsarah.com', 'www.cloudwithsarah.com'],
+  defaultBehavior: {
+    origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(websiteBucket),
+    viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+    functionAssociations: [{
+      function: wwwRedirect,
+      eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+    }],
+  },
+  certificate: certificate,
+});</code></pre>
+
+            <h3>Kill the Zombie</h3>
+
+            <pre><code class="language-typescript">// DELETE THIS — you don't need it anymore!
+// const redirectBucket = new s3.Bucket(this, 'RedirectBucket', {
+//   bucketName: rootDomain,
+//   websiteRedirect: { ... }
+// });
+
+// 🪦 Rest in peace, little bucket. You were configured perfectly.
+// You just never got any traffic.</code></pre>
+
+            <h3>Verify It Works</h3>
+
+            <p>After deploying:</p>
+
+            <pre><code class="language-bash">$ curl -I https://cloudwithsarah.com
+
+HTTP/2 301
+location: https://www.cloudwithsarah.com/
+server: CloudFront
+x-cache: FunctionGeneratedResponse from cloudfront</code></pre>
+
+            <p><strong>Get the 301 redirect!</strong> 🎉 The URL changes in browsers, search engines understand your
+                canonical URL, and you're running lean infrastructure.</p>
+
+            <figure class="blog-image">
+                <img src="images/squid-game-front-man.gif" alt="get clout" loading="lazy">
+            </figure>
+
+            <hr>
+
+            <h2>Full Working CDK Stack</h2>
+
+            <p>Here's the complete, copy-paste-ready solution:</p>
+
+            <pre><code class="language-typescript">import * as cdk from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as cloudfrontOrigins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as route53 from 'aws-cdk-lib/aws-route53';
+import * as targets from 'aws-cdk-lib/aws-route53-targets';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import { Construct } from 'constructs';
+
+export class ModernStaticSiteStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    const rootDomain = 'example.com';  // Change this
+    const wwwDomain = `www.${rootDomain}`;
+
+    // ============================================
+    // ONE bucket is all you need. &lt;3
+    // ============================================
+    const websiteBucket = new s3.Bucket(this, 'WebsiteBucket', {
+      bucketName: wwwDomain,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,  // Private!
+      enforceSSL: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    });
+
+    // ============================================
+    // DNS & Certificate
+    // ============================================
+    const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
+      domainName: rootDomain,
+    });
+
+    const certificate = new acm.Certificate(this, 'Certificate', {
+      domainName: rootDomain,
+      subjectAlternativeNames: [wwwDomain],
+      validation: acm.CertificateValidation.fromDns(hostedZone),
+    });
+
+    // ============================================
+    // THE MAGIC: CloudFront Function for redirect
+    // ============================================
+    const wwwRedirect = new cloudfront.Function(this, 'WwwRedirect', {
+      functionName: `${rootDomain.replace(/\./g, '-')}-www-redirect`,
+      code: cloudfront.FunctionCode.fromInline(`
+        function handler(event) {
+          var request = event.request;
+          var host = request.headers.host.value;
+
+          if (!host.startsWith('www.')) {
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: {
+                'location': { value: 'https://www.' + host + request.uri }
+              }
+            };
+          }
+          return request;
+        }
+      `),
+    });
+
+    // ============================================
+    // ONE CloudFront distribution
+    // ============================================
+    const distribution = new cloudfront.Distribution(this, 'Distribution', {
+      domainNames: [rootDomain, wwwDomain],
+      defaultRootObject: 'index.html',
+      defaultBehavior: {
+        origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(websiteBucket),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        functionAssociations: [{
+          function: wwwRedirect,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        }],
+      },
+      certificate: certificate,
+    });
+
+    // ============================================
+    // Route53 - both domains point to CloudFront
+    // ============================================
+    new route53.ARecord(this, 'RootRecord', {
+      zone: hostedZone,
+      recordName: rootDomain,
+      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
+    });
+
+    new route53.ARecord(this, 'WwwRecord', {
+      zone: hostedZone,
+      recordName: 'www',
+      target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
+    });
+  }
+}</code></pre>
+
+            <hr>
+
+            <h2>When You Actually Need Two Buckets</h2>
+
+            <p>To be fair, the AWS docs aren't <em>wrong</em> — they're just written for a specific scenario.</p>
+
+            <p><strong>Use two buckets when:</strong></p>
+            <ul>
+                <li>You're doing S3-only hosting (no CloudFront) — maybe for a quick internal tool</li>
+                <li>You need S3 website endpoints specifically (rare)</li>
+                <li>You're maintaining a legacy setup and can't justify the migration effort</li>
+            </ul>
+
+            <p><strong>Use CloudFront Functions when:</strong></p>
+            <ul>
+                <li>You're using CloudFront (you should be for any production site)</li>
+                <li>You want private buckets with OAC (modern security best practice)</li>
+                <li>You prefer minimal, maintainable infrastructure</li>
+                <li>You're using infrastructure as code</li>
+            </ul>
+
+            <p><br>For basically any static website in 2026? <br>&emsp;<strong>CloudFront Functions is the
+                    answer.</strong>
+            </p>
+
+            <figure class="blog-image">
+                <img src="images/drake-meme.jpg" alt="prefer 1 bucket + Cloudfront" loading="lazy">
+            </figure>
+
+            <hr>
+
+            <h2>Bonus: Other Modern Best Practices</h2>
+
+            <p>While you're modernizing your redirect, here are other 2026 best practices worth implementing:</p>
+
+            <h3>Use OAC, Not OAI</h3>
+
+            <p><strong>What it is:</strong> Origin Access Control (OAC) is the modern way for CloudFront to access
+                private S3
+                buckets. It replaced Origin Access Identity (OAI).</p>
+
+            <p><strong>Why it matters:</strong> OAC uses AWS SigV4 signing (the same authentication your AWS CLI uses),
+                provides better CloudTrail audit logging, and supports newer S3 features like SSE-KMS encryption. OAI is
+                deprecated and has known limitations.</p>
+
+            <pre><code class="language-typescript">// ✅ Modern: OAC (Origin Access Control)
+origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(bucket)
+
+// ❌ Legacy: OAI (Origin Access Identity) — deprecated!
+origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
+
+            <h3>Add Security Headers</h3>
+
+            <p><strong>What it is:</strong> HTTP headers that tell browsers to enable security features.</p>
+
+            <p><strong>Why it matters:</strong> These headers protect against common attacks like clickjacking
+                (X-Frame-Options), XSS (Content-Security-Policy), and protocol downgrade attacks
+                (Strict-Transport-Security). Adding them demonstrates security awareness — something technical
+                interviewers notice.</p>
+
+            <pre><code class="language-typescript">const securityHeaders = new cloudfront.ResponseHeadersPolicy(this, 'SecurityHeaders', {
+  securityHeadersBehavior: {
+    strictTransportSecurity: {
+      accessControlMaxAge: cdk.Duration.days(365),
+      includeSubdomains: true,
+      preload: true,
+      override: true,
+    },
+    contentTypeOptions: { override: true },  // Prevents MIME sniffing
+    frameOptions: {
+      frameOption: cloudfront.HeadersFrameOption.DENY,  // Prevents clickjacking
+      override: true
+    },
+    xssProtection: {
+      protection: true,
+      modeBlock: true,
+      override: true
+    },
+  },
+});</code></pre>
+
+            <h3>Use OIDC for CI/CD, Not Access Keys</h3>
+
+            <p><strong>What it is:</strong> OpenID Connect lets GitHub Actions authenticate with AWS using temporary
+                credentials instead of stored access keys.</p>
+
+            <p><strong>Why it matters:</strong> Access keys are long-lived secrets. If they leak (and secrets leak),
+                attackers have permanent access until you notice and revoke them. OIDC credentials expire in minutes and
+                are never stored anywhere. It's the difference between leaving a house key under your mat vs using a
+                one-time entry code.</p>
+
+            <pre><code class="language-typescript">const provider = new iam.OpenIdConnectProvider(this, 'GitHubOIDC', {
+  url: 'https://token.actions.githubusercontent.com',
+  clientIds: ['sts.amazonaws.com'],
+});</code></pre>
+
+            <hr>
+
+            <h2>Lessons Learned</h2>
+
+            <figure class="blog-image">
+                <img src="images/roll_safe_meme.jpg" alt="roll safe meme" loading="lazy"
+                    style="width: 100%; height: 200px; object-fit: cover;">
+            </figure>
+
+            <ol>
+                <li><strong>Understand WHY, not just HOW.</strong> I followed tutorials without understanding the
+                    architecture they assumed. The two-bucket approach made sense for S3-only hosting — but I wasn't
+                    doing S3-only hosting.</li>
+
+                <li><strong>Test your assumptions.</strong> A simple <code>curl -I</code> would have revealed the
+                    problem immediately. I assumed "both URLs load the site" meant "the redirect is working." It didn't.
+                </li>
+
+                <li><strong>Documentation lags behind features.</strong> The two-bucket method is still documented as
+                    standard, but it predates CloudFront Functions (2021). Just because something is in the official
+                    docs doesn't mean it's the best current approach.</li>
+
+                <li><strong>Infrastructure as code reveals intent.</strong> Looking at my CDK code made the problem
+                    obvious — both Route53 records pointed to CloudFront. The redirect bucket was never in the request
+                    path. IaC isn't just about automation; it's documentation that can't lie.</li>
+
+                <li><strong>Communities perpetuate outdated patterns.</strong> That Reddit thread from 2018 wasn't wrong
+                    at the time — CloudFront Functions didn't exist. But copying 8-year-old solutions for modern
+                    infrastructure creates zombie infrastructure.</li>
+            </ol>
+
+            <hr>
+
+            <h2>TL;DR</h2>
+
+            <div class="callout-box">
+                <h3>🎯 The Modern Static Site Stack</h3>
+
+                <p>For any static website using CloudFront (which should be all of them):</p>
+
+                <ul>
+                    <li>✅ <strong>1 S3 bucket</strong> (private, Block Public Access ON)</li>
+                    <li>✅ <strong>1 CloudFront distribution</strong> with OAC</li>
+                    <li>✅ <strong>1 CloudFront Function</strong> for www redirect (~10 lines)</li>
+                    <li>✅ <strong>1 ACM certificate</strong> (covers both domains)</li>
+                    <li>✅ <strong>Route53 A records</strong> pointing both domains to CloudFront</li>
+                </ul>
+
+                <p><strong>No zombie buckets. No duplicate content. No wasted infrastructure.</strong></p>
+            </div>
+
+            <figure class="blog-image architecture-diagram">
+                <img src="images/full-modern-architecture.png"
+                    alt="Complete modern static site architecture with Route53, ACM, CloudFront Function, OAC, and private S3"
+                    loading="lazy">
+                <figcaption>The complete modern stack: single bucket, single distribution, proper security
+                </figcaption>
+            </figure>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>If you're using...</th>
+                        <th>Do this</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>S3-only hosting (no CloudFront)</td>
+                        <td>Two buckets, S3 website redirect</td>
+                    </tr>
+                    <tr>
+                        <td>CloudFront (like everyone in 2026)</td>
+                        <td><strong>One bucket + CloudFront Function</strong></td>
+                    </tr>
+                    <tr>
+                        <td>CloudFront + complex logic needs</td>
+                        <td>Lambda@Edge (but probably not)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>Resources</h2>
+
+            <ul>
+                <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html"
+                        target="_blank" rel="noopener noreferrer">AWS S3 Redirect Documentation</a> — The
+                    "canonical"
+                    two-bucket approach (for historical context)</li>
+                <li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html"
+                        target="_blank" rel="noopener noreferrer">AWS CloudFront Functions Documentation</a> — The
+                    modern approach</li>
+                <li><a href="https://www.tecracer.com/blog/2024/08/mastering-url-redirections-with-aws-cloudfront-functions.html"
+                        target="_blank" rel="noopener noreferrer">Mastering URL Redirections with AWS CloudFront
+                        Functions</a> — Great 2024 article that gets it right</li>
+                <li><a href="https://www.reddit.com/r/aws/comments/7va4vk/do_you_have_to_make_two_s3_buckets_for_your/"
+                        target="_blank" rel="noopener noreferrer">That Reddit Thread From 2018</a> — Where my
+                    confusion
+                    began (and where CloudFront Functions didn't exist yet)</li>
+            </ul>
+
+            <hr>
+
+            <p style="font-style: italic; color: var(--secondary-color); margin-top: 3rem;"><em>Sarah Wadley is a
+                    Software Engineer and Cloud Architect with experience in defense systems and data infrastructure.
+                    She
+                    builds AI-augmented developer tools and writes about AWS architecture and infrastructure-as-code.
+                    Currently seeking her next role — check out her <a
+                        href="https://www.cloudwithsarah.com">portfolio</a> or connect on <a
+                        href="https://www.linkedin.com/in/sarah-wadley/" target="_blank"
+                        rel="noopener noreferrer">LinkedIn</a>.</em></p>
+        </section>
+
+        <footer class="post-author">
+            <picture>
+                <source srcset="/images/headshot.webp" type="image/webp">
+                <img src="/images/headshot.JPG" alt="Sarah Wadley" class="author-avatar">
+            </picture>
+            <div class="author-info">
+                <span class="author-name">Sarah Wadley</span>
+                <p class="author-bio">Software Engineer & Cloud Architect. Writing about AWS, infrastructure, and
+                    lessons learned the hard way.</p>
+                <div class="author-links">
+                    <a href="https://www.linkedin.com/in/sarah-wadley/">LinkedIn</a>
+                    <a href="/">Portfolio</a>
+                </div>
+            </div>
+        </footer>
+
+        <footer class="post-footer">
+            <a href="/blog/">← Back to all posts</a>
+        </footer>
+    </article>
+
+    <footer>
+        <div class="footer-content">
+            <h3>Let's Connect</h3>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:sarah_wadley@outlook.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <div class="resume-section">
+                <p class="resume-label">Download My Resume:</p>
+                <div class="resume-download-buttons">
+                    <a href="/resume/Sarah_Wadley_Resume.pdf" download class="download-resume-btn">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </a>
+                    <a href="/resume/Sarah_Wadley_Resume.docx" download
+                        class="download-resume-btn download-resume-btn-secondary">
+                        <i class="fas fa-file-word"></i> DOCX
+                    </a>
+                </div>
+            </div>
+            <p class="footer-copyright">© <span id="current-year"></span> Sarah Wadley. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</body>
+
+</html>

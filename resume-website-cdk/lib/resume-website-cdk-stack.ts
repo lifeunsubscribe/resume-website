@@ -30,20 +30,27 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
       publicReadAccess: false,
     });
 
-    // Redirect bucket for root domain
-    const redirectBucket = new s3.Bucket(this, 'RedirectBucket', {
-      bucketName: rootDomain,
-      websiteRedirect: {
-        hostName: wwwDomain,
-        protocol: s3.RedirectProtocol.HTTPS
-      },
-      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      enforceSSL: true,
-      publicReadAccess: false,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-    });
+    // ============================================================
+    // REMOVED: Redirect bucket is no longer needed
+    // ============================================================
+    // The bucket below was configured correctly but never received traffic
+    // because Route53 points to CloudFront, not to the S3 website endpoint.
+    // CloudFront Functions now handle the redirect at the edge.
+    // See blog post: /blog/2-buckets-1-website/
+    //
+    // const redirectBucket = new s3.Bucket(this, 'RedirectBucket', {
+    //   bucketName: rootDomain,
+    //   websiteRedirect: {
+    //     hostName: wwwDomain,
+    //     protocol: s3.RedirectProtocol.HTTPS
+    //   },
+    //   objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+    //   blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    //   enforceSSL: true,
+    //   publicReadAccess: false,
+    //   removalPolicy: cdk.RemovalPolicy.DESTROY,
+    //   autoDeleteObjects: true,
+    // });
 
     // Deployment of website files to S3
     new s3deploy.BucketDeployment(this, 'DeployWebsite', {
@@ -136,6 +143,28 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
       enableAcceptEncodingBrotli: true,
     });
 
+    // CloudFront Function: Redirect non-www to www
+    const wwwRedirect = new cloudfront.Function(this, 'WwwRedirectFunction', {
+      functionName: 'cloudwithsarah-www-redirect',
+      code: cloudfront.FunctionCode.fromInline(`
+        function handler(event) {
+          var request = event.request;
+          var host = request.headers.host.value;
+
+          if (!host.startsWith('www.')) {
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: {
+                'location': { value: 'https://www.' + host + request.uri }
+              }
+            };
+          }
+          return request;
+        }
+      `),
+    });
+
     // Then create the distribution with OAC
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       defaultRootObject: 'index.html',
@@ -145,6 +174,10 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         responseHeadersPolicy: responseHeadersPolicy,
         cachePolicy: cachePolicy,
+        functionAssociations: [{
+          function: wwwRedirect,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        }],
       },
       certificate: certificate,
     });

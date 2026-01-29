@@ -47,6 +47,10 @@ jobs:
           aws s3 sync ./resume-website-files s3://www.cloudwithsarah.com \
             --delete \
             --exclude "*" \
+            --exclude "blog/_source/*" \
+            --exclude "blog/_template/*" \
+            --exclude "*.md" \
+            --exclude ".gitkeep" \
             --include "*.html" \
             --include "*.css" \
             --include "*.js" \
