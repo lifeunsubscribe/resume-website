@@ -7,12 +7,15 @@
     <title>Blog | Cloud With Sarah</title>
     <meta name="description" content="Technical blog posts about AWS, cloud architecture, and software engineering.">
     <meta property="og:title" content="Blog | Cloud With Sarah">
-    <meta property="og:description" content="Technical blog posts about AWS, cloud architecture, and software engineering.">
+    <meta property="og:description"
+        content="Technical blog posts about AWS, cloud architecture, and software engineering.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.cloudwithsarah.com/blog/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -38,10 +41,23 @@
         <h2><i class="fas fa-blog section-icon"></i> Blog</h2>
 
         <article class="post-card">
-            <h2><a href="/blog/2-buckets-1-website/">2 Buckets 1 Website: How CloudFront Changes AWS Static Site Redirects</a></h2>
-            <time datetime="2026-01-27">January 27, 2026</time>
-            <p>I followed the "canonical" AWS approach for static site redirects, created zombie infrastructure that never received traffic, and discovered the modern way to handle www redirects with CloudFront Functions.</p>
-            <a href="/blog/2-buckets-1-website/" class="read-more">Read more →</a>
+            <a href="/blog/2-buckets-1-website/" class="post-card-link">
+                <div class="post-card-image">
+                    <img src="/blog/2-buckets-1-website/images/featured.png" alt="Two S3 buckets - one faded, one solid"
+                        loading="lazy" onerror="this.style.display='none'">
+                </div>
+                <div class="post-card-content">
+                    <h2>2 Buckets 1 Website</h2>
+                    <p class="post-card-subtitle">How CloudFront Changes AWS Static Site Redirects</p>
+                    <p class="post-card-excerpt">I followed the "canonical" AWS approach for static site redirects,
+                        built infrastructure that never received traffic, and discovered the modern way to handle www
+                        redirects.</p>
+                    <div class="post-card-meta">
+                        <time datetime="2026-01-27">Jan 27, 2026</time>
+                        <span class="post-card-arrow">Read more &rarr;</span>
+                    </div>
+                </div>
+            </a>
         </article>
 
         <!-- Future posts go here, newest first -->
@@ -51,10 +67,12 @@
         <div class="footer-content">
             <h3>Let's Connect</h3>
             <div class="footer-social">
-                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank"
+                    rel="noopener noreferrer">
                     <i class="fab fa-linkedin"></i>
                 </a>
-                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank"
+                    rel="noopener noreferrer">
                     <i class="fab fa-github"></i>
                 </a>
                 <a href="mailto:sarah_wadley@outlook.com" aria-label="Email">
@@ -67,7 +85,8 @@
                     <a href="/resume/Sarah_Wadley_Resume.pdf" download class="download-resume-btn">
                         <i class="fas fa-file-pdf"></i> PDF
                     </a>
-                    <a href="/resume/Sarah_Wadley_Resume.docx" download class="download-resume-btn download-resume-btn-secondary">
+                    <a href="/resume/Sarah_Wadley_Resume.docx" download
+                        class="download-resume-btn download-resume-btn-secondary">
                         <i class="fas fa-file-word"></i> DOCX
                     </a>
                 </div>

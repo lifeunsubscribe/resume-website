@@ -8,16 +8,21 @@
     <meta name="description"
         content="I followed the canonical AWS approach, created zombie infrastructure, and discovered the modern way to handle www redirects with CloudFront Functions.">
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/">
     <meta property="og:title" content="2 Buckets 1 Website: How CloudFront Changes AWS Static Site Redirects">
     <meta property="og:description"
-        content="I followed the canonical AWS approach, created zombie infrastructure, and discovered the modern way to handle www redirects with CloudFront Functions.">
-    <meta property="og:image" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/images/og-image.png">
-    <meta property="og:url" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/">
-    <meta property="og:type" content="article">
+        content="I followed the canonical AWS approach, created zombie infrastructure, and discovered the modern way nobody's talking about.">
+    <meta property="og:image" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/images/featured.png">
 
-    <!-- Twitter Card -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/">
+    <meta name="twitter:title" content="2 Buckets 1 Website: How CloudFront Changes AWS Static Site Redirects">
+    <meta name="twitter:description"
+        content="I followed the canonical AWS approach, created zombie infrastructure, and discovered the modern way nobody's talking about.">
+    <meta name="twitter:image" content="https://www.cloudwithsarah.com/blog/2-buckets-1-website/images/featured.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,11 +53,19 @@
 
     <article class="blog-post">
         <header>
-            <h1>2 Buckets 1 Website</h1>
-            <h2>How CloudFront Changes this Fundamental Rule</h2>
-            <p><em>I followed the "canonical" AWS approach, created zombie infrastructure, and discovered the modern way
-                    nobody's talking about.</em></p>
-            <div class="post-meta">
+            <div class="header-top">
+                <h1>2 Buckets 1 Website</h1>
+                <h2>How CloudFront Changes This Fundamental Rule</h2>
+            </div>
+
+            <hr class="header-divider">
+
+            <div class="header-meta">
+                <p class="header-excerpt">
+                    "I followed the 'canonical' AWS approach, built zombie infrastructure, and discovered the modern
+                    way nobody's talking about."
+                </p>
+
                 <div class="author-info">
                     <picture>
                         <source srcset="/images/headshot.webp" type="image/webp">
@@ -60,6 +73,7 @@
                     </picture>
                     <div class="author-details">
                         <span class="author-name">Sarah Wadley</span>
+                        <span class="separator">·</span>
                         <time datetime="2026-01-27">Jan 27, 2026</time>
                     </div>
                 </div>
@@ -69,7 +83,7 @@
         <section class="post-content">
             <h2>The Setup</h2>
 
-            <p>So there I was building my portfolio website on AWS. <br> S3, CloudFront, Route53 - the whole serverless
+            <p>I was building my portfolio website on AWS. <br> S3, CloudFront, Route53 - the whole serverless
                 static site stack. Everything was going great until I got to a seemingly simple question:</p>
 
             <p><strong>How do I make <code>cloudwithsarah.com</code> redirect to
@@ -99,9 +113,7 @@
 
             <p>Seems official enough. <a
                     href="https://stackoverflow.com/questions/10115799/set-up-dns-based-url-forwarding-in-amazon-route53"
-                    target="_blank" rel="noopener noreferrer">Stack Overflow agreed</a>. <a
-                    href="https://www.reddit.com/r/aws/comments/7va4vk/do_you_have_to_make_two_s3_buckets_for_your/"
-                    target="_blank" rel="noopener noreferrer">Reddit agreed</a>. <a
+                    target="_blank" rel="noopener noreferrer">Stack Overflow agreed</a>. Reddit agreed. <a
                     href="https://www.stxnext.com/blog/devops-hosting-static-websites-aws-s3" target="_blank"
                     rel="noopener noreferrer">Blog posts from 2025 are STILL recommending it</a>. Who was I to argue?
             </p>
@@ -744,11 +756,11 @@ export class ModernStaticSiteStack extends cdk.Stack {
 
             <h2>When You Actually Need Two Buckets</h2>
 
-            <p>To be fair, the AWS docs aren't <em>wrong</em> — they're just written for a specific scenario.</p>
+            <p>To be fair, the AWS docs aren't <em>wrong</em>, they're just written for a specific scenario.</p>
 
             <p><strong>Use two buckets when:</strong></p>
             <ul>
-                <li>You're doing S3-only hosting (no CloudFront) — maybe for a quick internal tool</li>
+                <li>You're doing S3-only hosting (no CloudFront), maybe for a quick internal tool</li>
                 <li>You need S3 website endpoints specifically (rare)</li>
                 <li>You're maintaining a legacy setup and can't justify the migration effort</li>
             </ul>

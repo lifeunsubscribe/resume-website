@@ -52,12 +52,6 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
     //   autoDeleteObjects: true,
     // });
 
-    // Deployment of website files to S3
-    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
-      sources: [s3deploy.Source.asset('../resume-website-files')],
-      destinationBucket: websiteBucket
-    });
-
     // Look up hosted zone
     const hostedZone = route53.HostedZone.fromLookup(this, 'HostedZone', {
       domainName: rootDomain
@@ -143,7 +137,7 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
       enableAcceptEncodingBrotli: true,
     });
 
-    // CloudFront Function: Redirect non-www to www
+    // CloudFront Function: Redirect non-www to www + rewrite directory URIs to index.html
     const wwwRedirect = new cloudfront.Function(this, 'WwwRedirectFunction', {
       functionName: 'cloudwithsarah-www-redirect',
       code: cloudfront.FunctionCode.fromInline(`
@@ -160,6 +154,13 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
               }
             };
           }
+
+          if (request.uri.endsWith('/')) {
+            request.uri += 'index.html';
+          } else if (!request.uri.includes('.')) {
+            request.uri += '/index.html';
+          }
+
           return request;
         }
       `),
@@ -180,6 +181,14 @@ export class ResumeWebsiteCdkStack extends cdk.Stack {
         }],
       },
       certificate: certificate,
+    });
+
+    // Deployment of website files to S3 (with automatic CloudFront cache invalidation)
+    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
+      sources: [s3deploy.Source.asset('../resume-website-files')],
+      destinationBucket: websiteBucket,
+      distribution: distribution,
+      distributionPaths: ['/*'],
     });
 
     // Manually associate OAC with the distribution
