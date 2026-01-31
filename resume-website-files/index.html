@@ -90,10 +90,11 @@
                     <h3>Software Engineer (Contract)</h3>
                     <h4>Westgate Data Science | Remote | Sep 2025 – Jan 2026</h4>
                     <ul>
-                        <li>Designed and implemented automated ETL pipeline processing 500M+ records daily for a high
-                            volume database (~200GB) in 2-3 hour cycles, eliminating manual data processing entirely
-                        </li>
-                        <li>Built core data infrastructure powering risk assessment platform, enabling automated
+                        <li>Designed automated ETL pipeline processing 500M+ records daily (~200GB) in 2-3 hour cycles,
+                            eliminating manual processing</li>
+                        <li>Leveraged AI-assisted development (ChatGPT, Codex) for architecture design and
+                            implementation, accelerating delivery</li>
+                        <li>Built core data infrastructure powering risk assessment platform with automated
                             cross-reference analysis</li>
                         <li>Developed standardized virtual environment setup scripts ensuring consistent dependencies
                             across development and production servers</li>
@@ -103,16 +104,14 @@
                     <h3>Software Engineer – Space and Airborne Systems</h3>
                     <h4>L3Harris Technologies | Palm Bay, FL | 2021 – 2024</h4>
                     <ul>
-                        <li>Partnered with defense sector clients through monthly requirements sessions, delivering
-                            iterative releases across 2-week sprint cycles for nearly a year on primary project</li>
-                        <li>Implemented features in real-time during customer demonstrations, showcasing rapid
-                            prototyping capabilities and deep system knowledge</li>
+                        <li>Partnered with defense clients through monthly requirements sessions, delivering iterative
+                            releases across 2-week sprints</li>
                         <li>Contributed to F-35 program through integration testing and failure analysis of
                             mission-critical avionics modules</li>
-                        <li>Created documentation archival automation and onboarding workflows, improving team knowledge
-                            transfer processes</li>
-                        <li>Maintained containerized deployments for classified satellite communication systems
-                            requiring specialized security protocols</li>
+                        <li>Implemented features live during customer demos, showcasing rapid prototyping capabilities
+                            and deep system knowledge</li>
+                        <li>Maintained containerized deployments for classified satellite communication systems with
+                            specialized security protocols</li>
                     </ul>
                 </div>
                 <div class="timeline-item">
@@ -139,7 +138,7 @@
                 </div>
                 <div class="skill-category">
                     <h3><i class="fas fa-cloud"></i> Cloud & Infrastructure</h3>
-                    <p>AWS (EC2, Lambda, S3, RDS), Docker, CI/CD pipelines, Jenkins, environment scripting</p>
+                    <p>AWS (EC2, Lambda, S3, RDS, CDK), Docker, CI/CD pipelines, Jenkins</p>
                 </div>
                 <div class="skill-category">
                     <h3><i class="fas fa-database"></i> Data & Backend</h3>
@@ -177,6 +176,19 @@
         <section id="projects" class="section">
             <h2><i class="fas fa-project-diagram section-icon"></i> Projects</h2>
             <div class="projects-grid">
+                <a href="projects/flowforge.html" class="project-card project-card-link">
+                    <h3>FlowForge – AI-Powered Development Workflow Tool</h3>
+                    <p>CLI tool integrating Claude Code to automate the full development lifecycle: issue branching,
+                        implementation, PR creation, AI-powered review triage, iterative fixes, and merge.</p>
+                    <div class="project-actions">
+                        <span class="project-link-text">
+                            <i class="fas fa-arrow-right"></i> View Architecture
+                        </span>
+                        <span class="project-link github-link" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://github.com/lifeunsubscribe/forge', '_blank', 'noopener,noreferrer');">
+                            <i class="fab fa-github"></i> GitHub
+                        </span>
+                    </div>
+                </a>
                 <a href="projects/portfolio-site.html" class="project-card project-card-link">
                     <h3>This Portfolio Site</h3>
                     <p>Static site deployed via AWS CDK with S3, CloudFront (OAC), Route53, and ACM certificate. Fully
@@ -193,9 +205,8 @@
                 <a href="projects/screenmyprofile.html" class="project-card project-card-link">
                     <span class="project-badge">In Development</span>
                     <h3>ScreenMyProfile – Social Media Screening Tool</h3>
-                    <p>Building AI-powered social media analysis platform targeting security clearance applicants;
-                        architected registration API and multi-environment AWS infrastructure with PostgreSQL backend
-                    </p>
+                    <p>AI-powered social media analysis for clearance applicants; multi-environment AWS
+                        infrastructure with ML sentiment analysis pipeline</p>
                     <div class="project-actions">
                         <span class="project-link-text">
                             <i class="fas fa-arrow-right"></i> View Details

@@ -487,7 +487,8 @@ main {
 }
 
 .project-card-link {
-    display: block;
+    display: flex;
+    flex-direction: column;
     text-decoration: none;
     color: inherit;
     cursor: pointer;
@@ -516,6 +517,7 @@ main {
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
+    margin-top: auto;
 }
 
 .project-link-text {
@@ -1959,4 +1961,190 @@ article.post-card a:hover {
         flex-direction: column;
         gap: 0.75rem;
     }
+
+    .stats-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .decisions-table-wrapper {
+        overflow-x: auto;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+
+    .ascii-diagram {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* ============================================
+   FLOWFORGE / PROJECT DETAIL COMPONENTS
+   ============================================ */
+
+/* Stats Row */
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.stat-card {
+    flex: 1;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--primary-color);
+}
+
+.stat-number {
+    display: block;
+    font-family: 'Libre Bodoni', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    margin-top: 0.25rem;
+}
+
+/* Feature Cards */
+.feature-card {
+    background-color: var(--card-background);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary-color);
+}
+
+.feature-card h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+}
+
+.feature-card h4 i {
+    font-size: 1rem;
+}
+
+.feature-card p {
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+}
+
+.feature-card p:last-child {
+    margin-bottom: 0;
+}
+
+.feature-card ul {
+    margin-left: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.feature-card li {
+    margin-bottom: 0.4rem;
+    line-height: 1.7;
+}
+
+.feature-card code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--code-inline-bg);
+    color: var(--code-inline-text);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+}
+
+/* ASCII Diagrams */
+.ascii-diagram {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--code-text);
+    background: var(--code-bg);
+    margin: 0;
+    padding: 1.25rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre;
+    border: 1px solid #334155;
+}
+
+/* Inline code in project sections */
+.project-section code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--code-inline-bg);
+    color: var(--code-inline-text);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+}
+
+/* Decisions Table */
+.decisions-table-wrapper {
+    margin: 1rem 0;
+}
+
+.decisions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.decisions-table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.875rem 1rem;
+}
+
+.decisions-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-light);
+    background-color: var(--card-background);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.decisions-table tr:last-child td {
+    border-bottom: none;
+}
+
+.decisions-table tr:hover td {
+    background-color: var(--bg-secondary);
+}
+
+.decisions-table td:first-child {
+    font-weight: 600;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
+
+.decisions-table td:nth-child(2) {
+    white-space: nowrap;
+}
+
+.decisions-table code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--code-inline-bg);
+    color: var(--code-inline-text);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
 }

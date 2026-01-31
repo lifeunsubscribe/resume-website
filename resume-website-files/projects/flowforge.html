@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="FlowForge Architecture - AI-powered GitHub workflow automation using Claude Code, with 5-phase lifecycle management and intelligent review triage">
+    <title>FlowForge Architecture | Sarah Wadley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-text">
+                <h1><a href="../#experience" style="color: inherit; text-decoration: none;">Sarah Wadley</a></h1>
+                <p class="tagline">Software Engineer | Cloud Architect</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../#experience" class="nav-link">Experience</a></li>
+            <li><a href="../#skills" class="nav-link">Technical Skills</a></li>
+            <li><a href="../#education" class="nav-link">Education</a></li>
+            <li><a href="../#projects" class="nav-link active">Projects</a></li>
+            <li><a href="/blog/" class="nav-link">Blog</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <main class="project-detail">
+        <a href="../#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+
+        <article>
+            <header class="project-header">
+                <h2>FlowForge Architecture</h2>
+                <p class="project-subtitle">AI-Powered GitHub Workflow Automation</p>
+                <div class="project-meta">
+                    <a href="https://github.com/lifeunsubscribe/forge" target="_blank"
+                        rel="noopener noreferrer" class="project-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </header>
+
+            <!-- Hero -->
+            <section class="project-section">
+                <h3>One Command. Complete Automation.</h3>
+                <p>FlowForge takes a GitHub issue number and drives it through the entire development lifecycle &mdash;
+                    branching, implementation via Claude Code, PR creation, AI-powered review triage, iterative fixes,
+                    and merge &mdash; all from a single <code>forge &lt;issue-number&gt;</code> invocation.</p>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <span class="stat-number">80%</span>
+                        <span class="stat-label">Less overhead</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Phase workflow</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">10</span>
+                        <span class="stat-label">Blocker rules</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The Problem -->
+            <section class="project-section">
+                <h3>The Problem</h3>
+                <p>Manual GitHub workflows are death by a thousand context switches. Every issue requires branching,
+                    implementing, pushing, creating a PR, waiting for CI, reading reviews, applying fixes, re-pushing,
+                    and merging &mdash; each step a manual context switch that breaks flow state.</p>
+
+                <div class="problem-points">
+                    <div class="problem-item">
+                        <i class="fas fa-random"></i>
+                        <p><strong>Context switches:</strong> Jumping between editor, terminal, and browser dozens of times per issue</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-comment-slash"></i>
+                        <p><strong>Missed feedback:</strong> Review comments lost in notification noise or forgotten across sessions</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-sync-alt"></i>
+                        <p><strong>Refresh hell:</strong> Polling CI status, waiting for checks, manually re-running failed jobs</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-hourglass-half"></i>
+                        <p><strong>2&ndash;4 hours per issue:</strong> Manual lifecycle from branch to merge for even simple changes</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Overview -->
+            <section class="project-section">
+                <h3>System Overview</h3>
+                <p>A single command triggers a 5-phase pipeline that takes an issue from assignment to merged PR:</p>
+
+                <div class="architecture-diagram">
+<pre class="ascii-diagram">
+┌─────────────────────────────────────────────────────────────┐
+│                      FlowForge CLI                          │
+│                   forge &lt;issue-number&gt;                      │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+     Single Issue  Batch Mode  Quick Mode
+          │            │            │
+          ▼            ▼            ▼
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 1: Development (Claude Code in isolated worktree)    │
+├─────────────────────────────────────────────────────────────┤
+│  Phase 2: PR Creation (dynamic wait times)                  │
+├─────────────────────────────────────────────────────────────┤
+│  Phase 3: Review Assessment (3-state AI triage)             │
+├──────────────────────────────────────────────────────────��──┤
+│  Phase 4: Fix Loop (up to 3 iterations)                     │
+├─────────────────────────────────────────────────────────────┤
+│  Phase 5: Merge + Security Feedback Capture                 │
+└─────────────────────────────────────────────────────────────┘</pre>
+                </div>
+            </section>
+
+            <!-- Key Features -->
+            <section class="project-section">
+                <h3>Key Features</h3>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-filter"></i> 3-State Review Triage</h4>
+                    <p>Claude CLI categorizes each review comment into one of three actionable states, eliminating noise
+                        and ensuring nothing important is missed:</p>
+                    <ul>
+                        <li><strong>ACTIONABLE_NOW</strong> &mdash; Fix in this PR. The review identifies a real issue
+                            that should be addressed before merge.</li>
+                        <li><strong>ACTIONABLE_LATER</strong> &mdash; Create a follow-up issue. Valid feedback, but
+                            out of scope for this change.</li>
+                        <li><strong>DISMISSED</strong> &mdash; Noise. Style preferences, false positives, or
+                            non-actionable commentary.</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-shield-alt"></i> Security Feedback Loop</h4>
+                    <p>A persistent scratchpad captures security findings across sessions. Claude Code sees past issues
+                        on every run, learning from previous mistakes and avoiding repeat vulnerabilities. The feedback
+                        loop compounds &mdash; each session makes the next one safer.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-hand-paper"></i> Blocker Detection</h4>
+                    <p>10 configurable rules automatically pause the workflow for manual review when changes touch
+                        sensitive areas:</p>
+                    <ul>
+                        <li>Infrastructure changes (Terraform, CDK, CloudFormation)</li>
+                        <li>Database migrations and schema changes</li>
+                        <li>Authentication and authorization modifications</li>
+                        <li>CI/CD pipeline changes</li>
+                        <li>Dependency updates and lock files</li>
+                    </ul>
+                    <p>When a blocker triggers, FlowForge creates a resume script for graceful recovery after manual
+                        review.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-code-branch"></i> Worktree Isolation</h4>
+                    <p>Automatic git worktree management keeps each issue in its own isolated workspace. Auto-stash
+                        protects in-progress work, parallel worktrees enable concurrent development, and shared
+                        <code>node_modules</code> avoids redundant installs.</p>
+                </div>
+            </section>
+
+            <!-- Configuration -->
+            <section class="project-section">
+                <h3>Configuration</h3>
+                <p>FlowForge uses a layered configuration system where each level overrides the previous:</p>
+                <ol>
+                    <li><strong>Defaults</strong> &mdash; Sensible built-in values</li>
+                    <li><strong>Global config</strong> &mdash; <code>~/.forge/config</code></li>
+                    <li><strong>Project config</strong> &mdash; <code>.forge/config</code> in repo root</li>
+                    <li><strong>Environment variables</strong> &mdash; <code>FORGE_*</code> overrides</li>
+                </ol>
+
+                <div class="architecture-diagram">
+<pre class="ascii-diagram">
+# .forge/config — per-project overrides
+MAX_FIX_ATTEMPTS=5
+BLOCKER_PATTERNS="migrations/|\.tf$|auth/"
+AUTO_MERGE=false
+WORKTREE_BASE="../.worktrees"</pre>
+                </div>
+            </section>
+
+            <!-- Technical Decisions -->
+            <section class="project-section">
+                <h3>Technical Decisions</h3>
+
+                <div class="decisions-table-wrapper">
+                    <table class="decisions-table">
+                        <thead>
+                            <tr>
+                                <th>Decision</th>
+                                <th>Choice</th>
+                                <th>Rationale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Language</td>
+                                <td>Bash</td>
+                                <td>Zero dependencies, native to every dev environment, and Claude Code runs in a shell
+                                    natively</td>
+                            </tr>
+                            <tr>
+                                <td>Config format</td>
+                                <td>Shell-sourceable</td>
+                                <td>No parser needed &mdash; <code>source .forge/config</code> loads everything</td>
+                            </tr>
+                            <tr>
+                                <td>Review detection</td>
+                                <td>Polling</td>
+                                <td>No server, no webhooks, no infrastructure to maintain</td>
+                            </tr>
+                            <tr>
+                                <td>Default mode</td>
+                                <td>Full lifecycle</td>
+                                <td>Prevents orphaned PRs and half-finished branches from accumulating</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="project-section">
+                <div class="blog-reference">
+                    <h3><i class="fab fa-github"></i> Source Code</h3>
+                    <p>Explore the full codebase, including the 5-phase pipeline and review triage system:</p>
+                    <a href="https://github.com/lifeunsubscribe/forge" target="_blank" rel="noopener noreferrer" class="blog-link">
+                        lifeunsubscribe/forge on GitHub →
+                    </a>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>Let's Connect</h3>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:sarah_wadley@outlook.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <p class="footer-copyright">&copy; <span id="current-year"></span> Sarah Wadley. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+</body>
+
+</html>
