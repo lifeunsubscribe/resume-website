@@ -34,6 +34,7 @@ jobs:
           pip install diagrams
           cd diagrams
           python generate_diagrams.py
+          mkdir -p ../resume-website-files/images/diagrams
           cp output/*.png ../resume-website-files/images/diagrams/
 
       - name: Configure AWS Credentials
@@ -46,25 +47,11 @@ jobs:
         run: |
           aws s3 sync ./resume-website-files s3://www.cloudwithsarah.com \
             --delete \
-            --exclude "*" \
+            --exclude "images/headshot.JPG" \
             --exclude "blog/_source/*" \
             --exclude "blog/_template/*" \
             --exclude "*.md" \
-            --exclude ".gitkeep" \
-            --include "*.html" \
-            --include "*.css" \
-            --include "*.js" \
-            --include "*.webp" \
-            --include "*.png" \
-            --include "*.jpg" \
-            --include "*.jpeg" \
-            --include "*.svg" \
-            --include "*.ico" \
-            --include "*.pdf" \
-            --include "*.docx" \
-            --include "*.ttf" \
-            --include "*.woff" \
-            --include "*.woff2"
+            --exclude ".gitkeep"
 
       - name: Invalidate CloudFront cache
         run: |
