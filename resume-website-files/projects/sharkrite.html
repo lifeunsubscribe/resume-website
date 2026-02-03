@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="FlowForge Architecture - AI-powered GitHub workflow automation using Claude Code, with 5-phase lifecycle management and intelligent review triage">
-    <title>FlowForge Architecture | Sarah Wadley</title>
+        content="Sharkrite Architecture - AI-powered GitHub workflow automation using Claude Code, with 5-phase lifecycle management and intelligent review triage">
+    <title>Sharkrite Architecture | Sarah Wadley</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -48,11 +48,11 @@
 
         <article>
             <header class="project-header">
-                <h2>FlowForge Architecture</h2>
+                <h2>Sharkrite Architecture</h2>
                 <p class="project-subtitle">AI-Powered GitHub Workflow Automation</p>
                 <div class="project-meta">
-                    <a href="https://github.com/lifeunsubscribe/flowforge" target="_blank"
-                        rel="noopener noreferrer" class="project-link">
+                    <a href="https://github.com/lifeunsubscribe/sharkrite" target="_blank" rel="noopener noreferrer"
+                        class="project-link">
                         <i class="fab fa-github"></i> View on GitHub
                     </a>
                 </div>
@@ -61,9 +61,9 @@
             <!-- Hero -->
             <section class="project-section">
                 <h3>One Command. Complete Automation.</h3>
-                <p>FlowForge takes a GitHub issue number and drives it through the entire development lifecycle &mdash;
+                <p>Sharkrite takes a GitHub issue number and drives it through the entire development lifecycle &mdash;
                     branching, implementation via Claude Code, PR creation, AI-powered review triage, iterative fixes,
-                    and merge &mdash; all from a single <code>forge &lt;issue-number&gt;</code> invocation.</p>
+                    and merge &mdash; all from a single <code>sharkrite &lt;issue-number&gt;</code> invocation.</p>
 
                 <div class="stats-row">
                     <div class="stat-card">
@@ -83,27 +83,32 @@
 
             <!-- The Problem -->
             <section class="project-section">
-                <h3>The Problem</h3>
-                <p>Manual GitHub workflows are death by a thousand context switches. Every issue requires branching,
-                    implementing, pushing, creating a PR, waiting for CI, reading reviews, applying fixes, re-pushing,
-                    and merging &mdash; each step a manual context switch that breaks flow state.</p>
+                <h3>The Problem being Solved</h3>
+                <p>Manual GitHub workflows are death by a thousand context switches. <br> Even with AI-assisted
+                    development, you're still manually branching, pushing, creating PRs, waiting for CI, reading
+                    reviews, fixing, re-pushing,and merging — all the ceremony that keeps your git history clean but
+                    destroys your focus. Every step breaks flow state.</p>
 
                 <div class="problem-points">
                     <div class="problem-item">
                         <i class="fas fa-random"></i>
-                        <p><strong>Context switches:</strong> Jumping between editor, terminal, and browser dozens of times per issue</p>
+                        <p><strong>Context switches:</strong> Jumping between editor, terminal, and browser dozens of
+                            times per issue</p>
                     </div>
                     <div class="problem-item">
                         <i class="fas fa-comment-slash"></i>
-                        <p><strong>Missed feedback:</strong> Review comments lost in notification noise or forgotten across sessions</p>
+                        <p><strong>Missed feedback:</strong> Review comments lost in notification noise or forgotten
+                            across sessions</p>
                     </div>
                     <div class="problem-item">
                         <i class="fas fa-sync-alt"></i>
-                        <p><strong>Refresh hell:</strong> Polling CI status, waiting for checks, manually re-running failed jobs</p>
+                        <p><strong>Refresh hell:</strong> Polling CI status, waiting for checks, manually re-running
+                            failed jobs</p>
                     </div>
                     <div class="problem-item">
                         <i class="fas fa-hourglass-half"></i>
-                        <p><strong>2&ndash;4 hours per issue:</strong> Manual lifecycle from branch to merge for even simple changes</p>
+                        <p><strong>2&ndash;4 hours per issue:</strong> Manual lifecycle from branch to merge for even
+                            simple changes</p>
                     </div>
                 </div>
             </section>
@@ -114,10 +119,10 @@
                 <p>A single command triggers a 5-phase pipeline that takes an issue from assignment to merged PR:</p>
 
                 <div class="architecture-diagram">
-<pre class="ascii-diagram">
+                    <pre class="ascii-diagram">
 ┌─────────────────────────────────────────────────────────────┐
-│                      FlowForge CLI                          │
-│                   forge &lt;issue-number&gt;                      │
+│                      Sharkrite CLI                          │
+│                 sharkrite &lt;issue-number&gt;                    │
 └──────────────────────┬──────────────────────────────────────┘
                        │
           ┌────────────┼────────────┐
@@ -175,7 +180,7 @@
                         <li>CI/CD pipeline changes</li>
                         <li>Dependency updates and lock files</li>
                     </ul>
-                    <p>When a blocker triggers, FlowForge creates a resume script for graceful recovery after manual
+                    <p>When a blocker triggers, Sharkrite creates a resume script for graceful recovery after manual
                         review.</p>
                 </div>
 
@@ -183,24 +188,25 @@
                     <h4><i class="fas fa-code-branch"></i> Worktree Isolation</h4>
                     <p>Automatic git worktree management keeps each issue in its own isolated workspace. Auto-stash
                         protects in-progress work, parallel worktrees enable concurrent development, and shared
-                        <code>node_modules</code> avoids redundant installs.</p>
+                        <code>node_modules</code> avoids redundant installs.
+                    </p>
                 </div>
             </section>
 
             <!-- Configuration -->
             <section class="project-section">
                 <h3>Configuration</h3>
-                <p>FlowForge uses a layered configuration system where each level overrides the previous:</p>
+                <p>Sharkrite uses a layered configuration system where each level overrides the previous:</p>
                 <ol>
                     <li><strong>Defaults</strong> &mdash; Sensible built-in values</li>
-                    <li><strong>Global config</strong> &mdash; <code>~/.forge/config</code></li>
-                    <li><strong>Project config</strong> &mdash; <code>.forge/config</code> in repo root</li>
-                    <li><strong>Environment variables</strong> &mdash; <code>FORGE_*</code> overrides</li>
+                    <li><strong>Global config</strong> &mdash; <code>~/.sharkrite/config</code></li>
+                    <li><strong>Project config</strong> &mdash; <code>.sharkrite/config</code> in repo root</li>
+                    <li><strong>Environment variables</strong> &mdash; <code>SHARKRITE_*</code> overrides</li>
                 </ol>
 
                 <div class="architecture-diagram">
-<pre class="ascii-diagram">
-# .forge/config — per-project overrides
+                    <pre class="ascii-diagram">
+# .sharkrite/config — per-project overrides
 MAX_FIX_ATTEMPTS=5
 BLOCKER_PATTERNS="migrations/|\.tf$|auth/"
 AUTO_MERGE=false
@@ -231,7 +237,7 @@ WORKTREE_BASE="../.worktrees"</pre>
                             <tr>
                                 <td>Config format</td>
                                 <td>Shell-sourceable</td>
-                                <td>No parser needed &mdash; <code>source .forge/config</code> loads everything</td>
+                                <td>No parser needed &mdash; <code>source .sharkrite/config</code> loads everything</td>
                             </tr>
                             <tr>
                                 <td>Review detection</td>
@@ -252,12 +258,17 @@ WORKTREE_BASE="../.worktrees"</pre>
                 <div class="blog-reference">
                     <h3><i class="fab fa-github"></i> Source Code</h3>
                     <p>Explore the full codebase, including the 5-phase pipeline and review triage system:</p>
-                    <a href="https://github.com/lifeunsubscribe/flowforge" target="_blank" rel="noopener noreferrer" class="blog-link">
-                        lifeunsubscribe/flowforge on GitHub →
+                    <a href="https://github.com/lifeunsubscribe/sharkrite" target="_blank" rel="noopener noreferrer"
+                        class="blog-link">
+                        lifeunsubscribe/sharkrite on GitHub →
                     </a>
                 </div>
             </section>
         </article>
+
+        <footer class="post-footer">
+            <a href="/#projects">← Back to all projects</a>
+        </footer>
     </main>
 
     <footer>
