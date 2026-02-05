@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """
 Generate AWS architecture diagrams for portfolio website.
-Run: python generate_diagrams.py
-Output: PNG files in ./output/
+Run: python generate_diagrams.py [output_dir]
+Output: PNG files in specified directory (default: ./output/)
 """
+
+import os
+import sys
 
 from diagrams import Diagram, Cluster, Edge
 from diagrams.aws.network import Route53, CloudFront
@@ -15,10 +18,10 @@ from diagrams.onprem.ci import GithubActions
 
 
 # Diagram 1: Website Hosting Architecture
-def create_hosting_diagram():
+def create_hosting_diagram(output_dir):
     with Diagram(
         "Portfolio Website Architecture",
-        filename="output/portfolio-hosting-architecture",
+        filename=f"{output_dir}/portfolio-hosting-architecture",
         show=False,
         direction="LR",  # Left to right
         graph_attr={
@@ -47,10 +50,10 @@ def create_hosting_diagram():
 
 
 # Diagram 2: CI/CD Pipeline
-def create_cicd_diagram():
+def create_cicd_diagram(output_dir):
     with Diagram(
         "CI/CD Pipeline",
-        filename="output/portfolio-cicd-pipeline",
+        filename=f"{output_dir}/portfolio-cicd-pipeline",
         show=False,
         direction="LR",
         graph_attr={
@@ -79,10 +82,10 @@ def create_cicd_diagram():
 
 
 # Diagram 3: Security Model
-def create_security_diagram():
+def create_security_diagram(output_dir):
     with Diagram(
         "Zero-Trust Security Model",
-        filename="output/portfolio-security-model",
+        filename=f"{output_dir}/portfolio-security-model",
         show=False,
         direction="TB",  # Top to bottom
         graph_attr={
@@ -111,11 +114,14 @@ def create_security_diagram():
 
 
 if __name__ == "__main__":
-    print("Generating diagrams...")
-    create_hosting_diagram()
+    output_dir = sys.argv[1] if len(sys.argv) > 1 else "output"
+    os.makedirs(output_dir, exist_ok=True)
+
+    print(f"Generating diagrams to {output_dir}/...")
+    create_hosting_diagram(output_dir)
     print("✓ Created portfolio-hosting-architecture.png")
-    create_cicd_diagram()
+    create_cicd_diagram(output_dir)
     print("✓ Created portfolio-cicd-pipeline.png")
-    create_security_diagram()
+    create_security_diagram(output_dir)
     print("✓ Created portfolio-security-model.png")
-    print("\nDone! Check the ./output/ directory.")
+    print(f"\nDone! Check {output_dir}/")

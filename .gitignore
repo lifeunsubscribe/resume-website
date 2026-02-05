@@ -49,6 +49,9 @@ Thumbs.db
 resume-website/**/*.js
 resume-website/**/*.css.map
 
+# Generated diagram outputs (built in CI)
+diagrams/output/
+
 # Optional: Ignore the resume website assets if they're built elsewhere
 resume-website-files/images/ 
 resume-website-files/resume/ 

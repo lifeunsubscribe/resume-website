@@ -33,9 +33,7 @@ jobs:
         run: |
           pip install diagrams
           cd diagrams
-          python generate_diagrams.py
-          mkdir -p ../resume-website-files/images/diagrams
-          cp output/*.png ../resume-website-files/images/diagrams/
+          python generate_diagrams.py ../resume-website-files/images/diagrams
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
