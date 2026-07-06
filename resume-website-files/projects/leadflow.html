@@ -49,7 +49,7 @@
         <article>
             <header class="project-header">
                 <h2>LeadFlow</h2>
-                <p class="project-subtitle">Multi-Tenant Marketing CRM for Local Service Businesses — Private Beta</p>
+                <p class="project-subtitle">Multi-Tenant Marketing CRM for Local Service Businesses (Private Beta)</p>
                 <div class="project-meta">
                     <a href="https://leadflow-crm-demo.vercel.app" target="_blank" rel="noopener noreferrer"
                         class="project-link">
@@ -63,7 +63,7 @@
                 <h3>A Full CRM Platform, Built Solo, Engineered Like a Team Shipped It</h3>
                 <p>LeadFlow is a serverless SaaS platform I architected and built end-to-end: local service businesses
                     capture leads from the web and ad campaigns, move them through visual pipelines, and follow up with
-                    automated SMS and email — with per-tenant isolation, analytics, and lead scoring built in. It's in
+                    automated SMS and email, with per-tenant isolation, analytics, and lead scoring built in. It's in
                     private beta with its first practice in the chiropractic / personal-injury vertical.</p>
 
                 <div class="stats-row">
@@ -89,8 +89,8 @@
             <!-- Architecture -->
             <section class="project-section">
                 <h3>Architecture</h3>
-                <p>Four npm workspaces — a React dashboard, a Lambda API, a shared domain package, and CDK
-                    infrastructure — deployed as a fully serverless stack:</p>
+                <p>Four npm workspaces (a React dashboard, a Lambda API, a shared domain package, and CDK
+                    infrastructure) deploy as a fully serverless stack:</p>
 
                 <div class="architecture-diagram">
                     <pre class="ascii-diagram">
@@ -102,13 +102,13 @@
 ┌────────────────────────────────────────────────────────────┐
 │            API Gateway + Cognito (per-tenant auth)         │
 ├────────────────────────────────────────────────────────────┤
-│   AWS Lambda API — leads · pipelines · funnels · campaigns │
+│   AWS Lambda API: leads · pipelines · funnels · campaigns  │
 │   automation engine · lead scoring · analytics · webhooks  │
 ├────────────────────────────────────────────────────────────┤
 │   DynamoDB (single-table, tenant-partitioned)  ·  S3       │
 │   SES (email) · Twilio (SMS) · EventBridge schedules       │
 ├────────────────────────────────────────────────────────────┤
-│   AWS CDK — reproducible staging + production stacks       │
+│   AWS CDK: reproducible staging + production stacks        │
 └────────────────────────────────────────────────────────────┘</pre>
                 </div>
             </section>
@@ -127,7 +127,7 @@
                 <div class="feature-card">
                     <h4><i class="fas fa-robot"></i> Automation Engine</h4>
                     <p>Trigger-based workflows drive follow-up without human touch: new-lead sequences, stage-change
-                        actions, and scheduled campaigns across SMS (Twilio) and email (SES) — with delivery tracking
+                        actions, and scheduled campaigns across SMS (Twilio) and email (SES), with delivery tracking
                         feeding back into analytics.</p>
                 </div>
 
@@ -148,7 +148,7 @@
                 <div class="feature-card">
                     <h4><i class="fas fa-rocket"></i> Engineering Rigor</h4>
                     <p>4,543 tests across jest, vitest, and CDK snapshot suites; PR-gated CI; automatic staging
-                        deploys; manual, promotable production releases. Infrastructure is code — both environments
+                        deploys; manual, promotable production releases. Infrastructure is code: both environments
                         are reproducible from the repo.</p>
                 </div>
 
@@ -156,9 +156,8 @@
                     <h4><i class="fas fa-fish"></i> Built AI-First</h4>
                     <p>LeadFlow is the largest proving ground for <a href="sharkrite.html">Sharkrite</a>, my autonomous
                         development engine: 700+ issues have been planned, implemented, reviewed, test-gated, and merged
-                        through its pipeline — including a measured 17 autonomous merges in a single day. The two
-                        projects evolved together: LeadFlow's scale kept finding Sharkrite's edge cases, and Sharkrite's
-                        gates kept LeadFlow's main branch green.</p>
+                        through its pipeline. The two projects evolved together: LeadFlow's scale kept finding
+                        Sharkrite's edge cases, and Sharkrite's gates kept LeadFlow's main branch green.</p>
                 </div>
             </section>
 
@@ -167,7 +166,7 @@
                 <h3>Status &amp; Access</h3>
                 <p>LeadFlow is pre-launch, in private beta with its first practice. The source is in a private
                     repository; the <a href="https://leadflow-crm-demo.vercel.app" target="_blank"
-                        rel="noopener noreferrer">live demo</a> runs on sample data — demo credentials and a code
+                        rel="noopener noreferrer">live demo</a> runs on sample data. Demo credentials and a code
                     walkthrough are available on request.</p>
             </section>
         </article>
