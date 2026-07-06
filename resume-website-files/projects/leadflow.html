@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LeadFlow - a multi-tenant serverless marketing CRM for local service businesses: lead pipelines, funnels, automated SMS/email campaigns, and analytics on AWS. ~96K lines of TypeScript, 4,500+ tests, full CI/CD">
+    <title>LeadFlow | Sarah Wadley</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-text">
+                <h1><a href="../#experience" style="color: inherit; text-decoration: none;">Sarah Wadley</a></h1>
+                <p class="tagline">Software Engineer | Cloud Architect</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../#experience" class="nav-link">Experience</a></li>
+            <li><a href="../#skills" class="nav-link">Technical Skills</a></li>
+            <li><a href="../#education" class="nav-link">Education</a></li>
+            <li><a href="../#projects" class="nav-link active">Projects</a></li>
+            <li><a href="/blog/" class="nav-link">Blog</a></li>
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </nav>
+
+    <main class="project-detail">
+        <a href="../#projects" class="back-link"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+
+        <article>
+            <header class="project-header">
+                <h2>LeadFlow</h2>
+                <p class="project-subtitle">Multi-Tenant Marketing CRM for Local Service Businesses — Private Beta</p>
+                <div class="project-meta">
+                    <a href="https://leadflow-crm-demo.vercel.app" target="_blank" rel="noopener noreferrer"
+                        class="project-link">
+                        <i class="fas fa-external-link-alt"></i> Live Demo (sample data)
+                    </a>
+                </div>
+            </header>
+
+            <!-- Hero -->
+            <section class="project-section">
+                <h3>A Full CRM Platform, Built Solo, Engineered Like a Team Shipped It</h3>
+                <p>LeadFlow is a serverless SaaS platform I architected and built end-to-end: local service businesses
+                    capture leads from the web and ad campaigns, move them through visual pipelines, and follow up with
+                    automated SMS and email — with per-tenant isolation, analytics, and lead scoring built in. It's in
+                    private beta with its first practice in the chiropractic / personal-injury vertical.</p>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <span class="stat-number">96K</span>
+                        <span class="stat-label">Lines of TypeScript</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">4,543</span>
+                        <span class="stat-label">Test cases</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">700+</span>
+                        <span class="stat-label">Issues shipped</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">CI/CD pipelines</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Architecture -->
+            <section class="project-section">
+                <h3>Architecture</h3>
+                <p>Four npm workspaces — a React dashboard, a Lambda API, a shared domain package, and CDK
+                    infrastructure — deployed as a fully serverless stack:</p>
+
+                <div class="architecture-diagram">
+                    <pre class="ascii-diagram">
+┌────────────────────────────────────────────────────────────┐
+│  React + Vite dashboard          Public funnel/form pages  │
+│  (S3 + CloudFront)               (lead capture endpoints)  │
+└──────────────┬─────────────────────────────┬───────────────┘
+               ▼                             ▼
+┌────────────────────────────────────────────────────────────┐
+│            API Gateway + Cognito (per-tenant auth)         │
+├────────────────────────────────────────────────────────────┤
+│   AWS Lambda API — leads · pipelines · funnels · campaigns │
+│   automation engine · lead scoring · analytics · webhooks  │
+├────────────────────────────────────────────────────────────┤
+│   DynamoDB (single-table, tenant-partitioned)  ·  S3       │
+│   SES (email) · Twilio (SMS) · EventBridge schedules       │
+├────────────────────────────────────────────────────────────┤
+│   AWS CDK — reproducible staging + production stacks       │
+└────────────────────────────────────────────────────────────┘</pre>
+                </div>
+            </section>
+
+            <!-- Features -->
+            <section class="project-section">
+                <h3>What It Does</h3>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-filter-circle-dollar"></i> Lead Capture to Close</h4>
+                    <p>Public funnel pages and embeddable forms feed straight into visual pipelines. Every lead carries
+                        its full activity history, and a real-time feed streams pipeline events to the dashboard as
+                        they happen.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-robot"></i> Automation Engine</h4>
+                    <p>Trigger-based workflows drive follow-up without human touch: new-lead sequences, stage-change
+                        actions, and scheduled campaigns across SMS (Twilio) and email (SES) — with delivery tracking
+                        feeding back into analytics.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-chart-line"></i> Campaigns, Scoring &amp; Analytics</h4>
+                    <p>Campaign performance, funnel conversion, and pipeline KPIs per tenant, plus behavioral lead
+                        scoring so practices call the hottest leads first. Integrations connect scheduling (Jane App)
+                        and ad platforms (Meta Marketing API) into the same picture.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-building-shield"></i> Multi-Tenant by Construction</h4>
+                    <p>Tenant isolation is enforced at the auth layer (Cognito) and the data layer
+                        (tenant-partitioned DynamoDB), not by convention. The data boundary is HIPAA-aware by design:
+                        marketing and contact data only, kept strictly separated from anything clinical.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-rocket"></i> Engineering Rigor</h4>
+                    <p>4,543 tests across jest, vitest, and CDK snapshot suites; PR-gated CI; automatic staging
+                        deploys; manual, promotable production releases. Infrastructure is code — both environments
+                        are reproducible from the repo.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-fish"></i> Built AI-First</h4>
+                    <p>LeadFlow is the largest proving ground for <a href="sharkrite.html">Sharkrite</a>, my autonomous
+                        development engine: 700+ issues have been planned, implemented, reviewed, test-gated, and merged
+                        through its pipeline — including a measured 17 autonomous merges in a single day. The two
+                        projects evolved together: LeadFlow's scale kept finding Sharkrite's edge cases, and Sharkrite's
+                        gates kept LeadFlow's main branch green.</p>
+                </div>
+            </section>
+
+            <!-- Status -->
+            <section class="project-section">
+                <h3>Status &amp; Access</h3>
+                <p>LeadFlow is pre-launch, in private beta with its first practice. The source is in a private
+                    repository; the <a href="https://leadflow-crm-demo.vercel.app" target="_blank"
+                        rel="noopener noreferrer">live demo</a> runs on sample data — demo credentials and a code
+                    walkthrough are available on request.</p>
+            </section>
+        </article>
+
+        <footer class="post-footer">
+            <a href="/#projects">← Back to all projects</a>
+        </footer>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <h3>Let's Connect</h3>
+            <div class="footer-social">
+                <a href="https://www.linkedin.com/in/sarah-wadley/" aria-label="LinkedIn" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/lifeunsubscribe" aria-label="GitHub" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:sarah_wadley@outlook.com" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <p class="footer-copyright">&copy; <span id="current-year"></span> Sarah Wadley. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+</body>
+
+</html>

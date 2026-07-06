@@ -103,13 +103,16 @@
                 <div class="architecture-diagram">
                     <img src="../images/diagrams/screenmyprofile-architecture.svg" alt="ScreenMyProfile architecture diagram showing multi-environment AWS setup with React frontend, API Gateway, Lambda, PostgreSQL, and AI analysis">
                 </div>
-                <p>The platform is built on a scalable serverless architecture with multi-environment support:</p>
+                <p>I built the platform on a scalable serverless architecture with multi-environment support:</p>
                 <ul>
-                    <li><strong>Frontend:</strong> React application with secure authentication via Cognito</li>
                     <li><strong>API Layer:</strong> API Gateway with Lambda functions for processing</li>
-                    <li><strong>Data Storage:</strong> PostgreSQL on RDS for structured data, S3 for file storage</li>
+                    <li><strong>Data Storage:</strong> PostgreSQL on RDS with Prisma-managed migrations, S3 for file
+                        storage</li>
+                    <li><strong>Auth:</strong> Cognito-backed identity with a dedicated auth-data stack</li>
                     <li><strong>AI Processing:</strong> Dedicated analysis pipeline for content screening</li>
-                    <li><strong>Environments:</strong> Separate dev, staging, and production infrastructure</li>
+                    <li><strong>Environments:</strong> Four CDK stacks (foundation, API, secrets, auth-data) across
+                        separate dev, staging, and production infrastructure</li>
+                    <li><strong>Frontend (planned):</strong> React application consuming the screening API</li>
                 </ul>
             </section>
 
@@ -164,6 +167,11 @@
                         <i class="fas fa-check-circle"></i>
                         <span>Authentication flow with Cognito</span>
                     </div>
+                    <div class="status-item completed">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Test suite spanning unit, integration, and live-AWS coverage, gated by
+                            branch-protection CI</span>
+                    </div>
                     <div class="status-item in-progress">
                         <i class="fas fa-spinner fa-spin"></i>
                         <span>Social media data ingestion pipeline</span>
@@ -174,7 +182,7 @@
                     </div>
                     <div class="status-item planned">
                         <i class="fas fa-circle"></i>
-                        <span>Results dashboard and reporting</span>
+                        <span>React frontend with results dashboard and reporting</span>
                     </div>
                 </div>
             </section>
