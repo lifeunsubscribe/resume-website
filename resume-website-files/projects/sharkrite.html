@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Sharkrite Architecture - AI-powered GitHub workflow automation using Claude Code, with 5-phase lifecycle management and intelligent review triage">
-    <title>Sharkrite Architecture | Sarah Wadley</title>
+        content="Sharkrite - an autonomous AI development engine for GitHub that takes issues from plan to merged PR with Claude Code agents, deterministic test gates, three-state review triage, and fail-closed safety, all from one command">
+    <title>Sharkrite | Sarah Wadley</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -18,6 +18,29 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        .stats-caption {
+            display: none;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.45rem;
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            margin-top: 0.6rem;
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2ecc71;
+            animation: livepulse 2s ease-out infinite;
+        }
+        @keyframes livepulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.55); }
+            70% { box-shadow: 0 0 0 7px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+    </style>
 </head>
 
 <body>
@@ -48,8 +71,8 @@
 
         <article>
             <header class="project-header">
-                <h2>Sharkrite Architecture</h2>
-                <p class="project-subtitle">AI-Powered GitHub Workflow Automation</p>
+                <h2>Sharkrite</h2>
+                <p class="project-subtitle">An Autonomous AI Development Engine for GitHub</p>
                 <div class="project-meta">
                     <a href="https://github.com/lifeunsubscribe/sharkrite" target="_blank" rel="noopener noreferrer"
                         class="project-link">
@@ -60,55 +83,77 @@
 
             <!-- Hero -->
             <section class="project-section">
-                <h3>One Command. Complete Automation.</h3>
-                <p>Sharkrite takes a GitHub issue number and drives it through the entire development lifecycle &mdash;
-                    branching, implementation via Claude Code, PR creation, AI-powered review triage, iterative fixes,
-                    and merge &mdash; all from a single <code>sharkrite &lt;issue-number&gt;</code> invocation.</p>
+                <h3>One Command. Complete Lifecycle. Deterministically Verified.</h3>
+                <p>Sharkrite runs the complete development lifecycle for a GitHub issue: isolated worktree,
+                    implementation by a Claude Code agent, PR creation, AI code review, automated triage, a full test
+                    gate, an iterative fix loop, and merge. Unattended by default. Point it at one issue, a list, or an
+                    entire label (<code>rite --label tech-debt</code>) and it clears the backlog while you do literally
+                    anything else.</p>
 
                 <div class="stats-row">
-                    <div class="stat-card">
-                        <span class="stat-number">80%</span>
-                        <span class="stat-label">Less overhead</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">5</span>
-                        <span class="stat-label">Phase workflow</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number">10</span>
-                        <span class="stat-label">Blocker rules</span>
-                    </div>
+                    <a class="stat-card" href="https://github.com/lifeunsubscribe/sharkrite/tree/main/tests"
+                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                        <span class="stat-number">2,600+</span>
+                        <span class="stat-label">Automated tests</span>
+                    </a>
+                    <a class="stat-card"
+                        href="https://github.com/lifeunsubscribe/sharkrite/issues?q=is%3Aissue+is%3Aclosed"
+                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                        <span class="stat-number" id="stat-issues-closed">427</span>
+                        <span class="stat-label">Issues closed</span>
+                    </a>
+                    <a class="stat-card"
+                        href="https://github.com/lifeunsubscribe/sharkrite/pulls?q=is%3Apr+is%3Amerged"
+                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                        <span class="stat-number" id="stat-prs-merged">482</span>
+                        <span class="stat-label">PRs merged</span>
+                    </a>
+                    <a class="stat-card" href="https://github.com/lifeunsubscribe/sharkrite/tree/main/tools/lint-rules"
+                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                        <span class="stat-number">35</span>
+                        <span class="stat-label">Custom lint rules</span>
+                    </a>
+                    <a class="stat-card" id="card-last-commit" href="https://github.com/lifeunsubscribe/sharkrite/commits/main"
+                        target="_blank" rel="noopener noreferrer"
+                        style="color: inherit; text-decoration: none; display: none;">
+                        <span class="stat-number" id="stat-last-commit">&ndash;</span>
+                        <span class="stat-label">Last commit</span>
+                    </a>
                 </div>
+                <p class="stats-caption" id="stats-live-caption"><span class="live-dot"></span> Live from the GitHub
+                    API</p>
             </section>
 
             <!-- The Problem -->
             <section class="project-section">
-                <h3>The Problem being Solved</h3>
-                <p>Manual GitHub workflows are death by a thousand context switches. <br> Even with AI-assisted
-                    development, you're still manually branching, pushing, creating PRs, waiting for CI, reading
-                    reviews, fixing, re-pushing,and merging — all the ceremony that keeps your git history clean but
-                    destroys your focus. Every step breaks flow state.</p>
+                <h3>The Problem Being Solved</h3>
+                <p>AI coding agents made writing code fast, and left everything around it manual. You still branch,
+                    push, open the PR, wait on review, triage the comments, re-run the tests, fix, re-push, and merge.
+                    Worse: an AI agent with merge rights is a liability unless something deterministic is checking its
+                    work. Sharkrite automates the ceremony and supplies the guardrails that make autonomous operation
+                    trustworthy.</p>
 
                 <div class="problem-points">
                     <div class="problem-item">
                         <i class="fas fa-random"></i>
-                        <p><strong>Context switches:</strong> Jumping between editor, terminal, and browser dozens of
-                            times per issue</p>
+                        <p><strong>Context switches:</strong> Editor, terminal, browser, CI dashboard. Dozens of hops
+                            per issue, each one breaking flow state</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-robot"></i>
+                        <p><strong>Self-review isn't verification:</strong> An agent grading its own work merges its
+                            own mistakes. Correctness has to come from deterministic checks (tests, lint rules, hooks),
+                            not from a model's opinion of a model</p>
                     </div>
                     <div class="problem-item">
                         <i class="fas fa-comment-slash"></i>
-                        <p><strong>Missed feedback:</strong> Review comments lost in notification noise or forgotten
-                            across sessions</p>
+                        <p><strong>Review noise:</strong> Real findings buried between style nitpicks and false
+                            positives, lost across sessions</p>
                     </div>
                     <div class="problem-item">
-                        <i class="fas fa-sync-alt"></i>
-                        <p><strong>Refresh hell:</strong> Polling CI status, waiting for checks, manually re-running
-                            failed jobs</p>
-                    </div>
-                    <div class="problem-item">
-                        <i class="fas fa-hourglass-half"></i>
-                        <p><strong>2&ndash;4 hours per issue:</strong> Manual lifecycle from branch to merge for even
-                            simple changes</p>
+                        <i class="fas fa-layer-group"></i>
+                        <p><strong>Backlogs don't batch:</strong> Fixing one issue at a time caps throughput at human
+                            attention span, not machine capacity</p>
                     </div>
                 </div>
             </section>
@@ -116,31 +161,34 @@
             <!-- System Overview -->
             <section class="project-section">
                 <h3>System Overview</h3>
-                <p>A single command triggers a 5-phase pipeline that takes an issue from assignment to merged PR:</p>
+                <p>A single command fans out into a pipeline where implementation, review, and verification run as
+                    separate, mutually-checking stages:</p>
 
                 <div class="architecture-diagram">
                     <pre class="ascii-diagram">
-┌─────────────────────────────────────────────────────────────┐
-│                      Sharkrite CLI                          │
-│                 sharkrite &lt;issue-number&gt;                    │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-          ┌────────────┼────────────┐
-          ▼            ▼            ▼
-     Single Issue  Batch Mode  Quick Mode
-          │            │            │
-          ▼            ▼            ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Phase 1: Development (Claude Code in isolated worktree)    │
-├─────────────────────────────────────────────────────────────┤
-│  Phase 2: PR Creation (dynamic wait times)                  │
-├─────────────────────────────────────────────────────────────┤
-│  Phase 3: Review Assessment (3-state AI triage)             │
-├──────────────────────────────────────────────────────────��──┤
-│  Phase 4: Fix Loop (up to 3 iterations)                     │
-├─────────────────────────────────────────────────────────────┤
-│  Phase 5: Merge + Security Feedback Capture                 │
-└─────────────────────────────────────────────────────────────┘</pre>
+┌──────────────────────────────────────────────────────────────┐
+│                        rite CLI                              │
+│   rite 42   ·   rite 21 45 31   ·   rite --label tech-debt   │
+│                  rite plan   ·   --undo                      │
+└──────────────────────────┬───────────────────────────────────┘
+                           │  batch orchestrator: parallel by
+                           │  default, repo mutex, circuit breakers
+                           ▼
+┌──────────────────────────────────────────────────────────────┐
+│  0 · Trivial-fix fast path (fenced diff? apply + gate only)  │
+├──────────────────────────────────────────────────────────────┤
+│  1 · Development: Claude Code agent in isolated worktree     │
+│      (deterministic deny hook: agent cannot git/gh/rm)       │
+├──────────────────────────────────────────────────────────────┤
+│  2 · PR creation + push (lease-only, no blind force)         │
+├──────────────────────────────────────────────────────────────┤
+│  3 · AI review  ∥  test gate: run in parallel;               │
+│      gate findings injected as [GATE] ACTIONABLE_NOW         │
+├──────────────────────────────────────────────────────────────┤
+│  4 · Three-state triage → fix loop (bounded, convergent)     │
+├──────────────────────────────────────────────────────────────┤
+│  5 · Merge · follow-up issues filed · cleanup                │
+└──────────────────────────────────────────────────────────────┘</pre>
                 </div>
             </section>
 
@@ -149,68 +197,120 @@
                 <h3>Key Features</h3>
 
                 <div class="feature-card">
-                    <h4><i class="fas fa-filter"></i> 3-State Review Triage</h4>
-                    <p>Claude CLI categorizes each review comment into one of three actionable states, eliminating noise
-                        and ensuring nothing important is missed:</p>
+                    <h4><i class="fas fa-traffic-light"></i> The Test Gate</h4>
+                    <p>Every commit faces a polyglot gate that parses bats/TAP, jest, vitest, and pytest output, and it
+                        fails closed. A missing test runner is a hard block, never a silent pass. Skipped tests don't
+                        count as passing. A gate that can't verify refuses to merge. Targeted selection maps the diff
+                        to the tests that cover it for fast fix cycles, a full-suite pass guards merge time, and single
+                        flaky failures get exactly one bounded re-run.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-filter"></i> Three-State Review Triage</h4>
+                    <p>An AI reviewer categorizes every finding, and deterministic guardrails keep the triage honest:</p>
                     <ul>
-                        <li><strong>ACTIONABLE_NOW</strong> &mdash; Fix in this PR. The review identifies a real issue
-                            that should be addressed before merge.</li>
-                        <li><strong>ACTIONABLE_LATER</strong> &mdash; Create a follow-up issue. Valid feedback, but
-                            out of scope for this change.</li>
-                        <li><strong>DISMISSED</strong> &mdash; Noise. Style preferences, false positives, or
-                            non-actionable commentary.</li>
+                        <li><strong>ACTIONABLE_NOW:</strong> fix in this PR. A scope bar forbids deferring the issue's
+                            own acceptance criteria.</li>
+                        <li><strong>ACTIONABLE_LATER:</strong> becomes a structured follow-up issue automatically,
+                            deduplicated and reconciled when the parent PR merges.</li>
+                        <li><strong>DISMISSED:</strong> noise, with every deferral requiring a written reason.</li>
                     </ul>
                 </div>
 
                 <div class="feature-card">
-                    <h4><i class="fas fa-shield-alt"></i> Security Feedback Loop</h4>
-                    <p>A persistent scratchpad captures security findings across sessions. Claude Code sees past issues
-                        on every run, learning from previous mistakes and avoiding repeat vulnerabilities. The feedback
-                        loop compounds &mdash; each session makes the next one safer.</p>
+                    <h4><i class="fas fa-coins"></i> Model Economics by Design</h4>
+                    <p>Deep-reasoning models only where deep reasoning pays: Opus plans issues and reviews code, Sonnet
+                        implements, Haiku classifies. Each role's model is independently configurable, and custom lint
+                        rules make a silent fall-through to the expensive default impossible.</p>
                 </div>
 
                 <div class="feature-card">
-                    <h4><i class="fas fa-hand-paper"></i> Blocker Detection</h4>
-                    <p>10 configurable rules automatically pause the workflow for manual review when changes touch
-                        sensitive areas:</p>
-                    <ul>
-                        <li>Infrastructure changes (Terraform, CDK, CloudFormation)</li>
-                        <li>Database migrations and schema changes</li>
-                        <li>Authentication and authorization modifications</li>
-                        <li>CI/CD pipeline changes</li>
-                        <li>Dependency updates and lock files</li>
-                    </ul>
-                    <p>When a blocker triggers, Sharkrite creates a resume script for graceful recovery after manual
-                        review.</p>
+                    <h4><i class="fas fa-piggy-bank"></i> Every Token Earns Its Keep</h4>
+                    <p>Cost discipline is engineered into every layer, not bolted on. Trivial fixes skip the pipeline
+                        entirely: a cheap classifier spots issues carrying a ready-made patch and applies it
+                        deterministically, gated by the test suite alone. Dev prompts stay lean: a tag index injects
+                        only the conventions and bug patterns relevant to the issue at hand, never whole documents.
+                        Shell output is compressed before the model ever reads it, via rtk, a token-optimizing CLI
+                        proxy. And fix loops obey a convergence contract: iterations are capped and a circuit breaker
+                        trips on repeated identical failure signatures, so a stuck issue costs a bounded number of
+                        tokens instead of an unbounded loop.</p>
                 </div>
 
                 <div class="feature-card">
-                    <h4><i class="fas fa-code-branch"></i> Worktree Isolation</h4>
-                    <p>Automatic git worktree management keeps each issue in its own isolated workspace. Auto-stash
-                        protects in-progress work, parallel worktrees enable concurrent development, and shared
-                        <code>node_modules</code> avoids redundant installs.
-                    </p>
+                    <h4><i class="fas fa-clipboard-list"></i> AI Issue Planning</h4>
+                    <p><code>rite plan</code> reads the project's architecture docs and ADRs and generates
+                        implementation-ready GitHub issues, enforced against an 11-section quality runbook: verified
+                        file pointers, acceptance criteria with runnable verification commands, explicit scope
+                        boundaries, and dependency chains. Filter the plan in natural language
+                        (<em>"phases 2 through 4 except auth"</em>) and approve interactively. Issues are grounded in
+                        the docs they cite, so a dev session never starts from a hallucinated brief.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-layer-group"></i> Batch Orchestration</h4>
+                    <p>Batches run parallel by default, with a repo-level mutex serializing concurrent invocations and
+                        a tested parity contract guaranteeing batch runs behave identically to single-issue runs.
+                        Circuit breakers halt the batch on repeated identical gate failures or provider auth loss.
+                        Stale branches rebase with lease below a divergence threshold and restart fresh above it, with
+                        LLM-assisted conflict resolution in between.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4><i class="fas fa-shield-alt"></i> Fail-Closed Safety</h4>
+                    <p>Designed so the worst case is a stopped pipeline, not a damaged repo. <code>rite --undo</code>
+                        rolls back PR, branch, and worktree. A deterministic PreToolUse hook denies the dev agent
+                        direct access to <code>git</code>, <code>gh</code>, and destructive shell commands: enforcement
+                        lives in a script, not in a prompt. Atomic locks coordinate concurrent sessions and degrade to
+                        advisory rather than failing merged work. Review staleness is tracked by commit SHA because API
+                        timestamps race, and force-pushes are lease-only.</p>
                 </div>
             </section>
 
-            <!-- Configuration -->
+            <!-- Self-hosting -->
             <section class="project-section">
-                <h3>Configuration</h3>
-                <p>Sharkrite uses a layered configuration system where each level overrides the previous:</p>
-                <ol>
-                    <li><strong>Defaults</strong> &mdash; Sensible built-in values</li>
-                    <li><strong>Global config</strong> &mdash; <code>~/.sharkrite/config</code></li>
-                    <li><strong>Project config</strong> &mdash; <code>.sharkrite/config</code> in repo root</li>
-                    <li><strong>Environment variables</strong> &mdash; <code>SHARKRITE_*</code> overrides</li>
-                </ol>
+                <h3>The Tool Builds Itself</h3>
+                <p>Sharkrite has been dogfooding since v1: its own <span id="prose-issues-closed">427</span> closed
+                    issues and <span id="prose-prs-merged">482</span> merged PRs were
+                    substantially driven through its own pipeline. Beyond self-hosting, it powers a small fleet of
+                    named AI agents, each owning a different repo, that coordinate through a shared markdown message
+                    board. Field agents file bug reports with log evidence, the maintainer agent independently verifies
+                    each claim against source, ships fixes through the same gated pipeline, and confirms them live. One
+                    field finding was even formally refuted with reproduction evidence.</p>
+                <p>The operating philosophy is <em>deterministic over model-policing-model</em>, and it's enforced by
+                    the medium itself: every guardrail is plain bash, an inspectable script with no hidden state, so
+                    enforcement is reproducible rather than probabilistic. When an AI behavior bug recurs, it becomes a
+                    lint rule, a regression test, and a written design contract, not another prompt asking the model to
+                    behave. That policy has produced 35 custom lint rules and an 81,000-line test suite (1.7 times the
+                    size of the source it tests), run on a macOS and Linux CI matrix.</p>
+            </section>
 
-                <div class="architecture-diagram">
-                    <pre class="ascii-diagram">
-# .sharkrite/config — per-project overrides
-MAX_FIX_ATTEMPTS=5
-BLOCKER_PATTERNS="migrations/|\.tf$|auth/"
-AUTO_MERGE=false
-WORKTREE_BASE="../.worktrees"</pre>
+            <!-- Battle scars -->
+            <section class="project-section">
+                <h3>Battle Scars (or: How It Got This Paranoid)</h3>
+                <p>Every fail-closed rule above traces to a real incident. Three favorites, kept because they're the
+                    best argument for the architecture:</p>
+                <div class="problem-points">
+                    <div class="problem-item">
+                        <i class="fas fa-ghost"></i>
+                        <p><strong>The backlog that fought back.</strong> Planned issues sometimes described work that
+                            had already landed. Dev sessions would run, change nothing, and report failure: five
+                            sessions burned in one measured day. Sharkrite now recognizes the no-change signature,
+                            verifies the issue against main, and closes it with evidence instead of burning another
+                            session.</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-folder-minus"></i>
+                        <p><strong>The symlink that ate node_modules.</strong> Worktrees once shared dependencies via
+                            symlink, until <code>npm ci</code> followed it and deleted the main checkout's
+                            node_modules. Reproduced, guarded, and then the design itself was removed: worktrees now
+                            bootstrap their own dependencies.</p>
+                    </div>
+                    <div class="problem-item">
+                        <i class="fas fa-hand-paper"></i>
+                        <p><strong>The flag that lied.</strong> The agent CLI's own tool-restriction flag was silently
+                            ignored in the production output mode. It was replaced with a deterministic deny hook that
+                            doesn't care what the model, or its CLI, thinks it's allowed to do.</p>
+                    </div>
                 </div>
             </section>
 
@@ -230,24 +330,33 @@ WORKTREE_BASE="../.worktrees"</pre>
                         <tbody>
                             <tr>
                                 <td>Language</td>
-                                <td>Bash</td>
-                                <td>Zero dependencies, native to every dev environment, and Claude Code runs in a shell
-                                    natively</td>
+                                <td>Bash (41K LOC)</td>
+                                <td>Zero runtime dependencies, native to every dev machine and to the agents
+                                    themselves. Proof that engineering rigor is a practice, not a language feature</td>
                             </tr>
                             <tr>
-                                <td>Config format</td>
-                                <td>Shell-sourceable</td>
-                                <td>No parser needed &mdash; <code>source .sharkrite/config</code> loads everything</td>
+                                <td>AI verification</td>
+                                <td>Deterministic gates</td>
+                                <td>Tests, lint rules, and hooks check the model's work. Never a second model asked to
+                                    grade the first</td>
+                            </tr>
+                            <tr>
+                                <td>Failure posture</td>
+                                <td>Fail closed</td>
+                                <td>Can't run the tests? Block. Runner missing? Block. Autonomous automation earns
+                                    trust by refusing to guess</td>
+                            </tr>
+                            <tr>
+                                <td>Provider coupling</td>
+                                <td>Abstraction layer</td>
+                                <td>Core is provider-agnostic; Claude Code is the shipped provider, not a hard
+                                    dependency</td>
                             </tr>
                             <tr>
                                 <td>Review detection</td>
-                                <td>Polling</td>
-                                <td>No server, no webhooks, no infrastructure to maintain</td>
-                            </tr>
-                            <tr>
-                                <td>Default mode</td>
-                                <td>Full lifecycle</td>
-                                <td>Prevents orphaned PRs and half-finished branches from accumulating</td>
+                                <td>Polling + SHA anchors</td>
+                                <td>No webhooks or servers to maintain; staleness tracked by commit ancestry because
+                                    API timestamps race</td>
                             </tr>
                         </tbody>
                     </table>
@@ -257,7 +366,8 @@ WORKTREE_BASE="../.worktrees"</pre>
             <section class="project-section">
                 <div class="blog-reference">
                     <h3><i class="fab fa-github"></i> Source Code</h3>
-                    <p>Explore the full codebase, including the 5-phase pipeline and review triage system:</p>
+                    <p>MIT-licensed and public: <span id="stat-commit-count">590</span> commits of pipeline, gates,
+                        and the test suite that keeps an autonomous engine honest.</p>
                     <a href="https://github.com/lifeunsubscribe/sharkrite" target="_blank" rel="noopener noreferrer"
                         class="blog-link">
                         lifeunsubscribe/sharkrite on GitHub →
@@ -292,6 +402,67 @@ WORKTREE_BASE="../.worktrees"</pre>
     </footer>
 
     <script src="../script.js" defer></script>
+    <script>
+        // Live repo stats: fetched client-side from the GitHub API so the page
+        // never goes stale. Hardcoded values are the no-JS/rate-limited
+        // fallback; the velocity row and LIVE caption only appear once real
+        // data has actually arrived.
+        (function () {
+            var repo = 'lifeunsubscribe/sharkrite';
+            function setCount(id, n) {
+                var el = document.getElementById(id);
+                if (el && n != null) el.textContent = Number(n).toLocaleString('en-US');
+            }
+            function ago(iso) {
+                var s = (Date.now() - new Date(iso).getTime()) / 1000;
+                if (s < 3600) return Math.max(1, Math.round(s / 60)) + 'm ago';
+                if (s < 86400) return Math.round(s / 3600) + 'h ago';
+                return Math.round(s / 86400) + 'd ago';
+            }
+            function apply(d) {
+                setCount('stat-issues-closed', d.issues);
+                setCount('prose-issues-closed', d.issues);
+                setCount('stat-prs-merged', d.prs);
+                setCount('prose-prs-merged', d.prs);
+                setCount('stat-commit-count', d.commits);
+                if (d.pushed) {
+                    document.getElementById('stat-last-commit').textContent = ago(d.pushed);
+                    document.getElementById('card-last-commit').style.display = '';
+                    document.getElementById('stats-live-caption').style.display = 'flex';
+                }
+            }
+            try {
+                var cached = JSON.parse(sessionStorage.getItem('rite-stats-v2') || 'null');
+                if (cached && Date.now() - cached.t < 3600000) { apply(cached); return; }
+            } catch (e) { /* ignore */ }
+            function search(q) {
+                return fetch('https://api.github.com/search/issues?per_page=1&q=' +
+                    encodeURIComponent('repo:' + repo + ' ' + q))
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (j) { return j ? j.total_count : null; });
+            }
+            var commits = fetch('https://api.github.com/repos/' + repo + '/commits?per_page=1')
+                .then(function (r) {
+                    if (!r.ok) return { count: null, pushed: null };
+                    var m = (r.headers.get('Link') || '').match(/[?&]page=(\d+)>; rel="last"/);
+                    var count = m ? parseInt(m[1], 10) : null;
+                    return r.json().then(function (j) {
+                        var pushed = j && j[0] && j[0].commit && j[0].commit.committer
+                            ? j[0].commit.committer.date : null;
+                        return { count: count, pushed: pushed };
+                    });
+                });
+            Promise.all([
+                search('is:issue is:closed'),
+                search('is:pr is:merged'),
+                commits
+            ]).then(function (v) {
+                var d = { issues: v[0], prs: v[1], commits: v[2].count, pushed: v[2].pushed, t: Date.now() };
+                apply(d);
+                try { sessionStorage.setItem('rite-stats-v2', JSON.stringify(d)); } catch (e) { /* ignore */ }
+            }).catch(function () { /* fallback snapshot stays */ });
+        })();
+    </script>
 </body>
 
 </html>

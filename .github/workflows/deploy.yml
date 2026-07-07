@@ -16,6 +16,9 @@ permissions:
 
 jobs:
   deploy:
+    # Deploy only on push to main — PR runs would otherwise sync unreviewed
+    # branch content to production (role trust allows all refs)
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,6 +49,7 @@ jobs:
           aws s3 sync ./resume-website-files s3://www.cloudwithsarah.com \
             --delete \
             --exclude "images/headshot.JPG" \
+            --exclude "resume/*" \
             --exclude "blog/_source/*" \
             --exclude "blog/_template/*" \
             --exclude "*.md" \

@@ -246,7 +246,7 @@ x-cache: Miss from cloudfront</code></pre>
             <p>Here's what made this extra sneaky: sometimes when I typed <code>cloudwithsarah.com</code> (without the
                 https://), it DID show up as <code>www.cloudwithsarah.com</code>.</p>
 
-            <p>But that wasn't my redirect working — that was my browser "helpfully" autocompleting from my browsing
+            <p>But that wasn't my redirect working. That was my browser "helpfully" autocompleting from my browsing
                 history! When I explicitly typed <code>https://cloudwithsarah.com/</code>, bypassing autocomplete, the
                 truth was revealed: no redirect. Just duplicate content.</p>
 
@@ -307,7 +307,7 @@ new route53.ARecord(this, 'WwwRecord', {
 
             <h3>The Two-Bucket Pattern Was Designed for S3-Only Hosting</h3>
 
-            <p>The AWS docs, the tutorials, the Stack Overflow answers — they all assume a world where <strong>S3 is
+            <p>The AWS docs, the tutorials, the Stack Overflow answers: they all assume a world where <strong>S3 is
                     your edge</strong>. Meaning: users' browsers talk directly to S3.</p>
 
             <p>In that S3-only world:</p>
@@ -446,7 +446,7 @@ new route53.ARecord(this, 'WwwRecord', {
                 <tbody>
                     <tr>
                         <td>Simple setup</td>
-                        <td>NO REDIRECT — both URLs serve content</td>
+                        <td>NO REDIRECT: both URLs serve content</td>
                     </tr>
                     <tr>
                         <td>Single distribution</td>
@@ -526,7 +526,7 @@ new route53.ARecord(this, 'WwwRecord', {
                 knowledge" before a better option existed.</p>
 
             <p><strong>Why it's the right choice:</strong> It's simpler, cheaper, more secure, and actually works. The
-                only reason NOT to use it is if you don't have CloudFront — but if you don't have CloudFront in 2026,
+                only reason NOT to use it is if you don't have CloudFront. But if you don't have CloudFront in 2026,
                 you probably should.</p>
 
             <hr>
@@ -621,7 +621,7 @@ const wwwRedirect = new cloudfront.Function(this, 'WwwRedirect', {
 
             <h3>Kill the Zombie</h3>
 
-            <pre><code class="language-typescript">// DELETE THIS — you don't need it anymore!
+            <pre><code class="language-typescript">// DELETE THIS: you don't need it anymore!
 // const redirectBucket = new s3.Bucket(this, 'RedirectBucket', {
 //   bucketName: rootDomain,
 //   websiteRedirect: { ... }
@@ -800,7 +800,7 @@ export class ModernStaticSiteStack extends cdk.Stack {
             <pre><code class="language-typescript">// ✅ Modern: OAC (Origin Access Control)
 origin: cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(bucket)
 
-// ❌ Legacy: OAI (Origin Access Identity) — deprecated!
+// ❌ Legacy: OAI (Origin Access Identity), deprecated!
 origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
 
             <h3>Add Security Headers</h3>
@@ -809,7 +809,7 @@ origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
 
             <p><strong>Why it matters:</strong> These headers protect against common attacks like clickjacking
                 (X-Frame-Options), XSS (Content-Security-Policy), and protocol downgrade attacks
-                (Strict-Transport-Security). Adding them demonstrates security awareness — something technical
+                (Strict-Transport-Security). Adding them demonstrates security awareness, something technical
                 interviewers notice.</p>
 
             <pre><code class="language-typescript">const securityHeaders = new cloudfront.ResponseHeadersPolicy(this, 'SecurityHeaders', {
@@ -859,7 +859,7 @@ origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
 
             <ol>
                 <li><strong>Understand WHY, not just HOW.</strong> I followed tutorials without understanding the
-                    architecture they assumed. The two-bucket approach made sense for S3-only hosting — but I wasn't
+                    architecture they assumed. The two-bucket approach made sense for S3-only hosting, but I wasn't
                     doing S3-only hosting.</li>
 
                 <li><strong>Test your assumptions.</strong> A simple <code>curl -I</code> would have revealed the
@@ -871,11 +871,11 @@ origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
                     docs doesn't mean it's the best current approach.</li>
 
                 <li><strong>Infrastructure as code reveals intent.</strong> Looking at my CDK code made the problem
-                    obvious — both Route53 records pointed to CloudFront. The redirect bucket was never in the request
+                    obvious: both Route53 records pointed to CloudFront. The redirect bucket was never in the request
                     path. IaC isn't just about automation; it's documentation that can't lie.</li>
 
                 <li><strong>Communities perpetuate outdated patterns.</strong> That Reddit thread from 2018 wasn't wrong
-                    at the time — CloudFront Functions didn't exist. But copying 8-year-old solutions for modern
+                    at the time: CloudFront Functions didn't exist. But copying 8-year-old solutions for modern
                     infrastructure creates zombie infrastructure.</li>
             </ol>
 
@@ -936,17 +936,17 @@ origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
 
             <ul>
                 <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html"
-                        target="_blank" rel="noopener noreferrer">AWS S3 Redirect Documentation</a> — The
+                        target="_blank" rel="noopener noreferrer">AWS S3 Redirect Documentation</a>: The
                     "canonical"
                     two-bucket approach (for historical context)</li>
                 <li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html"
-                        target="_blank" rel="noopener noreferrer">AWS CloudFront Functions Documentation</a> — The
+                        target="_blank" rel="noopener noreferrer">AWS CloudFront Functions Documentation</a>: The
                     modern approach</li>
                 <li><a href="https://www.tecracer.com/blog/2024/08/mastering-url-redirections-with-aws-cloudfront-functions.html"
                         target="_blank" rel="noopener noreferrer">Mastering URL Redirections with AWS CloudFront
-                        Functions</a> — Great 2024 article that gets it right</li>
+                        Functions</a>: Great 2024 article that gets it right</li>
                 <li><a href="https://www.reddit.com/r/aws/comments/7va4vk/do_you_have_to_make_two_s3_buckets_for_your/"
-                        target="_blank" rel="noopener noreferrer">That Reddit Thread From 2018</a> — Where my
+                        target="_blank" rel="noopener noreferrer">That Reddit Thread From 2018</a>: Where my
                     confusion
                     began (and where CloudFront Functions didn't exist yet)</li>
             </ul>
@@ -957,7 +957,7 @@ origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
                     Software Engineer and Cloud Architect with experience in defense systems and data infrastructure.
                     She
                     builds AI-augmented developer tools and writes about AWS architecture and infrastructure-as-code.
-                    Currently seeking her next role — check out her <a
+                    Currently seeking her next role. Check out her <a
                         href="https://www.cloudwithsarah.com">portfolio</a> or connect on <a
                         href="https://www.linkedin.com/in/sarah-wadley/" target="_blank"
                         rel="noopener noreferrer">LinkedIn</a>.</em></p>
@@ -965,7 +965,7 @@ origin: new cloudfrontOrigins.S3Origin(bucket)</code></pre>
                 <h3><i class="fas fa-project-diagram"></i> Related Project</h3>
                 <p>See full architecture, tech stack, and design decisions behind this site:</p>
                 <a href="/projects/portfolio-site.html" class="blog-link">
-                    This Portfolio Site — Architecture & Infrastructure Breakdown →
+                    This Portfolio Site – Architecture & Infrastructure Breakdown →
                 </a>
             </div>
         </section>
