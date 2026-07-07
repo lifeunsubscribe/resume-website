@@ -113,28 +113,9 @@
                         <span class="stat-number">35</span>
                         <span class="stat-label">Custom lint rules</span>
                     </a>
-                </div>
-                <div class="stats-row" id="stats-live-row" style="display: none;">
-                    <a class="stat-card" id="link-merged-week"
-                        href="https://github.com/lifeunsubscribe/sharkrite/pulls?q=is%3Apr+is%3Amerged"
-                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-                        <span class="stat-number" id="stat-merged-week">&ndash;</span>
-                        <span class="stat-label">PRs merged this week</span>
-                    </a>
-                    <a class="stat-card" id="link-closed-week"
-                        href="https://github.com/lifeunsubscribe/sharkrite/issues?q=is%3Aissue+is%3Aclosed"
-                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-                        <span class="stat-number" id="stat-closed-week">&ndash;</span>
-                        <span class="stat-label">Issues closed this week</span>
-                    </a>
-                    <a class="stat-card"
-                        href="https://github.com/lifeunsubscribe/sharkrite/issues?q=is%3Aissue+is%3Aopen"
-                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-                        <span class="stat-number" id="stat-open-backlog">&ndash;</span>
-                        <span class="stat-label">Open backlog</span>
-                    </a>
-                    <a class="stat-card" href="https://github.com/lifeunsubscribe/sharkrite/commits/main"
-                        target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                    <a class="stat-card" id="card-last-commit" href="https://github.com/lifeunsubscribe/sharkrite/commits/main"
+                        target="_blank" rel="noopener noreferrer"
+                        style="color: inherit; text-decoration: none; display: none;">
                         <span class="stat-number" id="stat-last-commit">&ndash;</span>
                         <span class="stat-label">Last commit</span>
                     </a>
@@ -428,7 +409,6 @@
         // data has actually arrived.
         (function () {
             var repo = 'lifeunsubscribe/sharkrite';
-            var weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
             function setCount(id, n) {
                 var el = document.getElementById(id);
                 if (el && n != null) el.textContent = Number(n).toLocaleString('en-US');
@@ -445,23 +425,14 @@
                 setCount('stat-prs-merged', d.prs);
                 setCount('prose-prs-merged', d.prs);
                 setCount('stat-commit-count', d.commits);
-                if (d.mergedWeek != null && d.closedWeek != null && d.open != null && d.pushed) {
-                    setCount('stat-merged-week', d.mergedWeek);
-                    setCount('stat-closed-week', d.closedWeek);
-                    setCount('stat-open-backlog', d.open);
+                if (d.pushed) {
                     document.getElementById('stat-last-commit').textContent = ago(d.pushed);
-                    document.getElementById('link-merged-week').href =
-                        'https://github.com/' + repo + '/pulls?q=' +
-                        encodeURIComponent('is:pr is:merged merged:>=' + d.weekAgo);
-                    document.getElementById('link-closed-week').href =
-                        'https://github.com/' + repo + '/issues?q=' +
-                        encodeURIComponent('is:issue is:closed closed:>=' + d.weekAgo);
-                    document.getElementById('stats-live-row').style.display = '';
+                    document.getElementById('card-last-commit').style.display = '';
                     document.getElementById('stats-live-caption').style.display = 'flex';
                 }
             }
             try {
-                var cached = JSON.parse(sessionStorage.getItem('rite-stats') || 'null');
+                var cached = JSON.parse(sessionStorage.getItem('rite-stats-v2') || 'null');
                 if (cached && Date.now() - cached.t < 3600000) { apply(cached); return; }
             } catch (e) { /* ignore */ }
             function search(q) {
@@ -484,17 +455,11 @@
             Promise.all([
                 search('is:issue is:closed'),
                 search('is:pr is:merged'),
-                search('is:pr is:merged merged:>=' + weekAgo),
-                search('is:issue is:closed closed:>=' + weekAgo),
-                search('is:issue is:open'),
                 commits
             ]).then(function (v) {
-                var d = {
-                    issues: v[0], prs: v[1], mergedWeek: v[2], closedWeek: v[3], open: v[4],
-                    commits: v[5].count, pushed: v[5].pushed, weekAgo: weekAgo, t: Date.now()
-                };
+                var d = { issues: v[0], prs: v[1], commits: v[2].count, pushed: v[2].pushed, t: Date.now() };
                 apply(d);
-                try { sessionStorage.setItem('rite-stats', JSON.stringify(d)); } catch (e) { /* ignore */ }
+                try { sessionStorage.setItem('rite-stats-v2', JSON.stringify(d)); } catch (e) { /* ignore */ }
             }).catch(function () { /* fallback snapshot stays */ });
         })();
     </script>
